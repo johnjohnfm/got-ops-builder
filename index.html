@@ -6,37 +6,36 @@
   <title>GPT OPS Prompt Builder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="favicon.png" type="image/png" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Roboto', sans-serif;
+      font-family: Helvetica, Arial, sans-serif;
       background: #f9f9f9;
       color: #111;
       padding: 32px 16px;
-      max-width: 520px;
+      max-width: 350px;
       margin: auto;
     }
 
     h1, h3 {
-      font-family: 'Roboto', sans-serif;
+      font-family: Helvetica, Arial, sans-serif;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       text-align: center;
       margin-bottom: 24px;
-      font-weight: 500;
+      font-weight: bold;
     }
 
     label {
       display: block;
       margin-top: 24px;
-      font-weight: 500;
+      font-weight: 600;
       font-size: 0.95rem;
     }
 
     input, textarea {
       width: 100%;
       padding: 12px;
-      font-family: 'Roboto', sans-serif;
+      font-family: Helvetica, Arial, sans-serif;
       font-size: 1rem;
       margin-top: 6px;
       border: 1px solid #ccc;
@@ -64,7 +63,7 @@
       border: none;
       border-radius: 6px;
       padding: 12px 24px;
-      font-weight: 500;
+      font-weight: bold;
       letter-spacing: 0.04em;
       font-size: 1rem;
       cursor: pointer;
@@ -79,14 +78,15 @@
     .output {
       height: 240px;
       margin-top: 24px;
-      font-family: 'Roboto', sans-serif;
+      font-family: Helvetica, Arial, sans-serif;
       font-size: 0.95rem;
     }
 
     .copy-status {
       font-size: 0.75rem;
-      color: green;
+      color: #fed001;
       margin-top: 8px;
+      text-align: center;
     }
 
     footer {
@@ -139,10 +139,11 @@
   </div>
 
   <button class="pill-btn" onclick="generatePrompt()">Generate</button>
-  <button class="pill-btn" onclick="copyToClipboard()">Copy</button>
-  <div class="copy-status" id="copyStatus"></div>
 
   <textarea id="output" class="output" readonly></textarea>
+
+  <button class="pill-btn" onclick="copyToClipboard()">Copy</button>
+  <div class="copy-status" id="copyStatus"></div>
 
   <footer>
     <p>Built with the GPT OPS System by <a href="https://johnjohnfm.uk" target="_blank">JOHNJOHNFM</a></p>
@@ -163,6 +164,7 @@
           f.classList.remove("hidden");
         }
         document.getElementById("output").value = '';
+        document.getElementById("copyStatus").innerText = "";
       });
     });
 
