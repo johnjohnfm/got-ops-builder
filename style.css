@@ -60,7 +60,7 @@ h1 {
   color: #000000;
 }
 .form-section {
-  margin-bottom: 24px; /* Changed from 32px to 24px */
+  margin-bottom: 24px;
 }
 .hidden {
   display: none;
@@ -71,7 +71,7 @@ label {
   color: #333333;
   margin-bottom: 8px;
 }
-input, textarea {
+input { /* Removed textarea from this selector */
   width: 100%;
   padding: 12px;
   font-size: 15px;
@@ -79,7 +79,7 @@ input, textarea {
   background-color: #ffffff;
   border: 1px solid #cccccc;
   border-radius: 5px;
-  margin-bottom: 16px;
+  margin-bottom: 0; /* Changed from 16px to 0 */
   box-sizing: border-box;
 }
 .submit-button {
@@ -111,7 +111,7 @@ input, textarea {
   font-size: 15px;
   border: 1px solid #cccccc;
   border-radius: 5px;
-  margin-bottom: 16px;
+  margin-bottom: 16px; /* Retained its margin-bottom */
   box-sizing: border-box;
 }
 footer {
