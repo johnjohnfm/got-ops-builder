@@ -71,7 +71,7 @@ label {
   color: #333333;
   margin-bottom: 8px;
 }
-input { /* Styles for input elements */
+input {
   width: 100%;
   padding: 12px;
   font-size: 15px;
@@ -79,7 +79,7 @@ input { /* Styles for input elements */
   background-color: #ffffff;
   border: 1px solid #cccccc;
   border-radius: 5px;
-  margin-bottom: 16px; /* New: Spacing after inputs, contributing to 24px rhythm */
+  margin-bottom: 16px;
   box-sizing: border-box;
 }
 .submit-button {
@@ -93,7 +93,7 @@ input { /* Styles for input elements */
   border: none;
   cursor: pointer;
   margin-right: 8px;
-  margin-bottom: 32px; /* New: Spacing after buttons as per spec */
+  margin-bottom: 32px;
 }
 .submit-button:hover {
   background-color: #fed001;
@@ -106,7 +106,7 @@ input { /* Styles for input elements */
   margin-bottom: 8px;
   font-style: italic;
 }
-.output { /* Styles for the output textarea */
+.output {
   height: 240px;
   padding: 12px;
   font-size: 15px;
@@ -114,6 +114,7 @@ input { /* Styles for input elements */
   border-radius: 5px;
   margin-bottom: 16px;
   box-sizing: border-box;
+  resize: none; /* New: Prevents user resizing */
 }
 footer {
   font-size: 12px;
