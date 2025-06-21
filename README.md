@@ -28,7 +28,7 @@ Visit the live demo: [https://gpt-ops-builder.vercel.app/](https://gpt-ops-build
 
 ---
 
-## 🎛️ Usage
+## ✖️ Usage
 
 1. Open the live page or your hosted URL.
 2. **Toggle** between **QUICK** and **FULL** modes:
@@ -39,7 +39,7 @@ Visit the live demo: [https://gpt-ops-builder.vercel.app/](https://gpt-ops-build
 
 ---
 
-## 🚀 Features
+## ✖️ Features
 
 - **Dual Modes:** QUICK for rapid prompts, FULL for detailed instruction sets
 - **Responsive UI:** 350px mobile-optimized layout, Helvetica typography
