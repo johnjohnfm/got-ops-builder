@@ -32,12 +32,12 @@ document.getElementById("generateButton").addEventListener("click", () => {
       generateStatus.innerText = "Please fill required fields.";
       return;
     }
-    // Correction 4: QUICK prompt output formatting
+    // Corrected QUICK prompt output logic
     txt = `Create full GPT Project Instructions using the GPT OPS method for a [TYPE] assistant called ${name}, whose job is to ${purpose}. Include memory, tone, tools, and examples.`;
   } else {
     const get = id => document.getElementById(id).value.trim();
     const fields = ["projectName","purpose","users","disciplines","outputs","tone","values","memory","mustHave","shouldHave","couldHave","wontHave"];
-    // Correction 5: Update labels for FULL prompt output
+    // Corrected labels for FULL prompt output based on PDF
     const labels = [
         "X PROJECT NAME",
         "X PURPOSE",
@@ -52,26 +52,27 @@ document.getElementById("generateButton").addEventListener("click", () => {
         "X COULD-HAVE EXTRAS",
         "X WON’T-HAVES"
     ];
-    let parts = [];
+    let parts = []; // Start with an empty array for parts
 
     for (let i = 0; i < fields.length; i++) {
       const val = get(fields[i]);
-      if (i < 3 && !val) {
+      if (i < 3 && !val) { // Project Name, Purpose, Primary Users are required
         generateStatus.innerText = "Please fill required fields.";
         return;
       }
-      // Only add if value is not empty, to prevent empty lines for optional fields
+      // Only add a line if the value is not empty
       if (val) {
           parts.push(`${labels[i]}: ${val}`);
       }
     }
-    // Add the main title after checks and before joining parts
+
+    // Add the main title at the beginning
     parts.unshift("✖ GPT OPS FULL INSTRUCTIONS");
 
     txt = parts.join("\n");
 
-    // Correction 5: Add the additional instructional text for FULL prompt
-    if (txt.trim() !== "✖ GPT OPS FULL INSTRUCTIONS") {
+    // Add the additional instructional text for FULL prompt, only if content was generated beyond just the title
+    if (parts.length > 1) { // Check if there's more than just the title
         txt += "\n\nAlso include 3-5 example input/output pairs showing how this GPT should respond to common user queries. The tone should be professional and clear. You may include comments in the output to help me edit it later.";
     }
   }
