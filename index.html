@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GPT OPS Prompt Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'DIN', 'Helvetica Neue', sans-serif;
+      background-color: #f9f9f9;
+      color: #000;
+      padding: 2rem;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    textarea, input, select {
+      width: 100%;
+      padding: 0.5rem;
+      font-family: inherit;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      margin-right: 1rem;
+      padding: 0.75rem 1.25rem;
+      font-size: 1rem;
+      background-color: #000;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    textarea.output {
+      height: 300px;
+      margin-top: 1rem;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>GPT OPS Prompt Builder</h1>
+
+  <div id="formFields">
+    <label>Project Name</label><input id="projectName" />
+    <label>Purpose</label><input id="purpose" />
+    <label>Primary Users</label><input id="users" />
+    <label>Core Disciplines</label><input id="disciplines" />
+    <label>Preferred Outputs</label><input id="outputs" />
+    <label>Brand or Tone</label><input id="tone" />
+    <label>Values or Priorities</label><input id="values" />
+    <label>Key Memory Elements</label><input id="memory" />
+    <label>Must-Have Behaviors</label><input id="mustHave" />
+    <label>Should-Have Features</label><input id="shouldHave" />
+    <label>Could-Have Extras</label><input id="couldHave" />
+    <label>Won’t-Haves</label><input id="wontHave" />
+  </div>
+
+  <button onclick="generatePrompt()">Generate Instructions</button>
+  <button onclick="copyToClipboard()">Copy to Clipboard</button>
+
+  <textarea id="output" class="output" readonly></textarea>
+
+  <script>
+    function generatePrompt() {
+      const get = id => document.getElementById(id).value.trim();
+      const prompt = `✖ PROJECT NAME: ${get("projectName")}
+✖ PURPOSE: ${get("purpose")}
+✖ PRIMARY USERS: ${get("users")}
+✖ CORE DISCIPLINES: ${get("disciplines")}
+✖ PREFERRED OUTPUTS: ${get("outputs")}
+✖ BRAND OR TONE: ${get("tone")}
+✖ VALUES OR PRIORITIES: ${get("values")}
+✖ KEY MEMORY ELEMENTS: ${get("memory")}
+✖ MUST-HAVE BEHAVIORS: ${get("mustHave")}
+✖ SHOULD-HAVE FEATURES: ${get("shouldHave")}
+✖ COULD-HAVE EXTRAS: ${get("couldHave")}
+✖ WON’T-HAVES: ${get("wontHave")}
+
+Also include 3–5 example input/output pairs showing how this GPT should respond to common user queries. The tone should be professional and clear. You may include comments in the output to help me edit it later.`;
+      document.getElementById("output").value = prompt;
+    }
+
+    function copyToClipboard() {
+      const output = document.getElementById("output");
+      output.select();
+      document.execCommand("copy");
+      alert("Prompt copied to clipboard.");
+    }
+  </script>
+</body>
+</html>
