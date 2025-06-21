@@ -60,7 +60,7 @@ h1 {
   color: #000000;
 }
 .form-section {
-  margin-bottom: 32px;
+  margin-bottom: 24px; /* Changed from 32px to 24px */
 }
 .hidden {
   display: none;
@@ -121,5 +121,5 @@ footer {
 }
 footer a {
   color: #fed001;
-  text-decoration: none;\n
+  text-decoration: none;
 }
