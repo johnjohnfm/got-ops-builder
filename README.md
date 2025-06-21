@@ -8,7 +8,7 @@ A clean, responsive interface for quickly generating modular GPT Project Instruc
 
 ---
 
-## 🔹 Live Demo
+## ✖️ Live Demo
 
 Visit the live demo: [https://gpt-ops-builder.vercel.app/](https://gpt-ops-builder.vercel.app/)
 
