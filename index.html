@@ -84,14 +84,27 @@
       margin-top: 0.25rem;
       border: 1px solid #ccc;
     }
+
+    .attribution, .legal {
+      font-size: 0.7rem;
+      color: #666;
+      text-align: center;
+      margin-top: 2rem;
+      line-height: 1.4;
+    }
+
+    .attribution a {
+      color: inherit;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <h1>GPT OPS Prompt Builder</h1>
 
   <div class="toggle-container">
-    <label><input type="radio" name="mode" value="full" onchange="toggleMode()"> Full Instructions</label>
     <label><input type="radio" name="mode" value="quick" checked onchange="toggleMode()"> Quick Prompt</label>
+    <label><input type="radio" name="mode" value="full" onchange="toggleMode()"> Full Instructions</label>
   </div>
 
   <div class="tooltip">
@@ -125,6 +138,15 @@
 
   <textarea id="output" class="output" readonly></textarea>
 
+  <p class="attribution">
+    Built with the GPT OPS System by <a href="https://johnjohnfm.uk" target="_blank">JOHNJOHNFM</a>
+  </p>
+  <p class="legal">
+    This tool is provided “as-is” under the custom GPT OPS License. <br />
+    Public or commercial use requires visible attribution. <br />
+    Redistribution or rebranding is prohibited without explicit permission.
+  </p>
+
   <script>
     function toggleMode() {
       const mode = document.querySelector('input[name="mode"]:checked').value;
@@ -134,7 +156,7 @@
     }
 
     function generatePrompt() {
-      const mode = document.querySelector('input[name="mode"]:checked').value;
+      const mode = document.querySelector('input[name="mode"]:checked").value;
 
       if (mode === "quick") {
         const name = document.getElementById("q_projectName").value.trim();
