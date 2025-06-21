@@ -69,17 +69,35 @@
     .toggle-container label {
       font-weight: normal;
     }
+
+    .form-group {
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .form-group.hidden {
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
   <h1>GPT OPS Prompt Builder</h1>
 
   <div class="toggle-container">
-    <label><input type="radio" name="mode" value="full" checked> Full Instructions</label>
-    <label><input type="radio" name="mode" value="quick"> Quick Prompt</label>
+    <label><input type="radio" name="mode" value="full" checked onchange="toggleMode()"> Full Instructions</label>
+    <label><input type="radio" name="mode" value="quick" onchange="toggleMode()"> Quick Prompt</label>
   </div>
 
-  <div id="formFields">
+  <div id="quickForm" class="form-group hidden">
+    <label>Project Name</label><input id="q_projectName" />
+    <label>Purpose</label><input id="q_purpose" />
+    <label>Core Disciplines</label><input id="q_disciplines" />
+  </div>
+
+  <div id="fullForm" class="form-group">
     <label>Project Name</label><input id="projectName" />
     <label>Purpose</label><input id="purpose" />
     <label>Primary Users</label><input id="users" />
@@ -100,15 +118,27 @@
   <textarea id="output" class="output" readonly></textarea>
 
   <script>
+    function toggleMode() {
+      const mode = document.querySelector('input[name="mode"]:checked').value;
+      document.getElementById("fullForm").classList.toggle("hidden", mode === "quick");
+      document.getElementById("quickForm").classList.toggle("hidden", mode === "full");
+
+      document.querySelectorAll('input').forEach(input => input.value = '');
+      document.getElementById("output").value = '';
+    }
+
     function generatePrompt() {
-      const get = id => document.getElementById(id).value.trim();
       const mode = document.querySelector('input[name="mode"]:checked').value;
 
       if (mode === "quick") {
+        const name = document.getElementById("q_projectName").value.trim();
+        const purpose = document.getElementById("q_purpose").value.trim();
+        const discipline = document.getElementById("q_disciplines").value.trim();
         const quickPrompt = `✖ QUICK PROMPT:
-Create full GPT Project Instructions using the GPT OPS method for a ${get("disciplines")} assistant called ${get("projectName")}, whose job is to ${get("purpose")}. Include memory, tone, tools, and examples.`;
+Create full GPT Project Instructions using the GPT OPS method for a ${discipline} assistant called ${name}, whose job is to ${purpose}. Include memory, tone, tools, and examples.`;
         document.getElementById("output").value = quickPrompt;
       } else {
+        const get = id => document.getElementById(id).value.trim();
         const fullPrompt = `I am building a custom ChatGPT Project for a specific purpose. Please generate full Project Instructions following the GPT OPS framework using the following parameters:
 
 ✖ PROJECT NAME: ${get("projectName")}
