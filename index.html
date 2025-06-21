@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,179 +5,15 @@
   <title>GPT OPS Prompt Builder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="favicon.png" type="image/png" />
-  <style>
-    body {
-      max-width: 350px;
-      margin: 0 auto;
-      padding: 32px 16px;
-      font-family: Helvetica, sans-serif;
-      background-color: #ffffff;
-      color: #333333;
-    }
-
-    .marquee {
-  max-width: 350px;
-  margin: 0 auto;
-      overflow: hidden;
-      white-space: nowrap;
-      box-sizing: border-box;
-      animation: scroll 20s linear infinite;
-      font-weight: bold;
-      color: #fed001;
-      font-size: 14px;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-
-    @keyframes scroll {
-      from {
-        transform: translateX(100%);
-      }
-      to {
-        transform: translateX(-100%);
-      }
-    }
-
-    .instructions {
-      font-size: 13px;
-      color: #666666;
-      margin-bottom: 24px;
-      line-height: 1.5;
-    }
-
-    h1, h3 {
-      text-align: center;
-      font-weight: bold;
-      margin-bottom: 16px;
-    }
-
-    label {
-      font-size: 14px;
-      font-weight: bold;
-      color: #333333;
-      display: block;
-      text-align: left;
-      margin-bottom: 8px;
-    }
-
-    input, textarea {
-      width: 100%; max-width: 350px; margin: 0 auto;
-      padding: 12px;
-      font-size: 15px;
-      color: #333333;
-      background-color: #ffffff;
-      border: 1px solid #cccccc;
-      border-radius: 5px;
-      box-sizing: border-box;
-      margin-bottom: 24px;
-    }
-
-    ::placeholder {
-      color: #bbbbbb;
-    }
-
-    .form-section.hidden {
-      display: none;
-    }
-
-    .mode-switch {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 24px;
-    }
-
-    .switch {
-      background-color: #000000;
-      border-radius: 20px;
-      padding: 4px;
-      display: flex;
-      gap: 8px;
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.3s ease;
-    }
-
-    .switch span {
-      padding: 6px 16px;
-      font-size: 14px;
-      font-weight: bold;
-      color: #ffffff;
-      border-radius: 20px;
-    }
-
-    .switch.active-full #fullLabel {
-      background-color: #fed001;
-      color: #000000;
-    }
-
-    .switch.active-quick #quickLabel {
-      background-color: #fed001;
-      color: #000000;
-    }
-
-    .submit-button {
-      font-size: 16px;
-      font-weight: 500;
-      background-color: #000000;
-      color: #ffffff;
-      height: 30px;
-      padding: 0 36px;
-      border-radius: 5px;
-      display: inline-block;
-      text-align: left;
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.2s ease;
-      border: none;
-    }
-
-    .submit-button:hover {
-      background-color: #fed001;
-      color: #000000;
-    }
-
-    .output {
-      height: 240px;
-      margin-top: 16px;
-      font-size: 15px;
-      padding: 12px;
-      font-family: Helvetica, sans-serif;
-      border: 1px solid #cccccc;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-
-    .copy-status {
-      font-size: 12px;
-      font-weight: normal;
-      color: #fed001;
-      text-align: left;
-      margin-bottom: 8px;
-    }
-
-    footer {
-      font-size: 0.75rem;
-      margin-top: 32px;
-      text-align: center;
-      line-height: 1.5;
-    }
-
-    footer a {
-      color: #fed001;
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="marquee"><span>JOHNJOHNFM JOHNJOHNFM JOHNJOHNFM JOHNJOHNFM</span></div>
-  <h1>GPT OPS Prompt Builder</h1>
-  <div class="instructions">
-    Fill out the fields below to generate a GPT OPS system prompt. Toggle between QUICK and FULL modes. Copy your result below.
+  <div class="marquee-wrapper">
+    <div class="marquee-text">JOHNJOHNFM JOHNJOHNFM JOHNJOHNFM JOHNJOHNFM</div>
   </div>
+
+  <h1>GPT OPS Prompt Builder</h1>
+  <p class="instructions">Fill out the fields below to generate a GPT OPS system prompt. Toggle between QUICK and FULL modes. Copy your result below.</p>
 
   <div class="mode-switch">
     <div id="toggle" class="switch active-quick" tabindex="0" role="button">
@@ -190,127 +25,53 @@
   <div id="quickForm" class="form-section">
     <h3>✖ QUICK PROMPT</h3>
     <label for="q_projectName">Project Name*</label>
-    <input id="q_projectName" placeholder="e.g. Ethics Copilot" />
+    <input id="q_projectName" type="text" placeholder="e.g. Ethics Copilot" />
     <label for="q_purpose">Purpose*</label>
-    <input id="q_purpose" placeholder="e.g. Helps users analyze moral arguments and clarify value claims" />
+    <input id="q_purpose" type="text" placeholder="e.g. Helps users analyze moral arguments and clarify value claims" />
     <label for="q_disciplines">Core Disciplines*</label>
-    <input id="q_disciplines" placeholder="e.g. Ethical reasoning, debate, moral philosophy" />
+    <input id="q_disciplines" type="text" placeholder="e.g. Ethical reasoning, debate, moral philosophy" />
   </div>
 
   <div id="fullForm" class="form-section hidden">
     <h3>✖ FULL INSTRUCTIONS</h3>
     <label for="projectName">Project Name*</label>
-    <input id="projectName" />
+    <input id="projectName" type="text" placeholder="e.g. Philosopher in Residence" />
     <label for="purpose">Purpose*</label>
-    <input id="purpose" />
+    <input id="purpose" type="text" placeholder="e.g. Help users resolve ethical dilemmas and clarify values" />
     <label for="users">Primary Users*</label>
-    <input id="users" />
+    <input id="users" type="text" placeholder="e.g. Students, ethicists, priests, Redditors" />
     <label for="disciplines">Core Disciplines*</label>
-    <input id="disciplines" />
+    <input id="disciplines" type="text" placeholder="e.g. Ethics, logic, metaphysics, theology" />
     <label for="outputs">Preferred Outputs</label>
-    <input id="outputs" />
+    <input id="outputs" type="text" placeholder="e.g. Clarifications, analogies, summaries, hot takes" />
     <label for="tone">Brand or Tone</label>
-    <input id="tone" />
+    <input id="tone" type="text" placeholder="e.g. Stoic, sarcastic, sincere, meme-literate" />
     <label for="values">Values or Priorities</label>
-    <input id="values" />
+    <input id="values" type="text" placeholder="e.g. Truth, empathy, logic, anti-cultism" />
     <label for="memory">Key Memory Elements</label>
-    <input id="memory" />
+    <input id="memory" type="text" placeholder="e.g. Famous quotes, favorite philosophers, unfinished arguments" />
     <label for="mustHave">Must-Have Behaviors</label>
-    <input id="mustHave" />
+    <input id="mustHave" type="text" placeholder="e.g. Quote Nietzsche, cite Wittgenstein, avoid productivity-bot logic" />
     <label for="shouldHave">Should-Have Features</label>
-    <input id="shouldHave" />
+    <input id="shouldHave" type="text" placeholder="e.g. Remembers names, recalls metaphors, anti-condescension" />
     <label for="couldHave">Could-Have Extras</label>
-    <input id="couldHave" />
+    <input id="couldHave" type="text" placeholder="e.g. Recites Aquinas memes, jokes about Heidegger" />
     <label for="wontHave">Won’t-Haves</label>
-    <input id="wontHave" />
+    <input id="wontHave" type="text" placeholder="e.g. Tarot, dream decoding, manifesting nonsense" />
   </div>
 
-  <button class="submit-button" onclick="generatePrompt()">Generate</button>
+  <div class="generate-status" id="generateStatus"></div>
+  <button class="submit-button" id="generateButton">Generate</button>
 
   <textarea id="output" class="output" readonly></textarea>
   <div class="copy-status" id="copyStatus"></div>
-  <button class="submit-button" onclick="copyToClipboard()">Copy</button>
+  <button class="submit-button" id="copyButton">Copy</button>
 
   <footer>
     <p>Built with the GPT OPS System by <a href="https://johnjohnfm.uk" target="_blank">JOHNJOHNFM</a></p>
-    <p>This tool is provided “as-is” under the GPT OPS License v2.0.<br>
-    Public/commercial use requires attribution. Redistribution is prohibited.</p>
+    <p>This tool is provided “as-is” under the GPT OPS License v2.0. Public and Commercial use requires Attribution or License. Redistribution is prohibited.</p>
   </footer>
 
-  <script>
-    const toggle = document.getElementById("toggle");
-    toggle.addEventListener("click", () => {
-      const quick = document.getElementById("quickForm");
-      const full = document.getElementById("fullForm");
-      const isQuick = toggle.classList.contains("active-quick");
-
-      toggle.classList.toggle("active-quick", !isQuick);
-      toggle.classList.toggle("active-full", isQuick);
-      quick.classList.toggle("hidden", isQuick);
-      full.classList.toggle("hidden", !isQuick);
-      document.getElementById("output").value = "";
-      document.getElementById("copyStatus").innerText = "";
-    });
-
-    function generatePrompt() {
-      const isQuick = toggle.classList.contains("active-quick");
-      let output = "";
-
-      if (isQuick) {
-        const name = document.getElementById("q_projectName").value;
-        const purpose = document.getElementById("q_purpose").value;
-        const disc = document.getElementById("q_disciplines").value;
-
-        output = `I am designing a custom ChatGPT Project. Please generate full Project Instructions using the GPT OPS framework, which emphasizes clarity, memory, modular behaviors, and ethical output formatting.
-
-This GPT should act as a ${disc} assistant named “${name},” with the purpose of ${purpose}. Format the instructions using the standard GPT OPS categories, including example input/output pairs.
-
-Use a tone that is professional and precise. Include behaviors, values, and constraints appropriate to this use case.`;
-      } else {
-        const get = id => document.getElementById(id).value;
-        output = `I am building a custom ChatGPT Project. Please generate full Project Instructions following the GPT OPS framework using the following parameters:
-
-✖ PROJECT NAME: ${get("projectName")}
-✖ PURPOSE: ${get("purpose")}
-✖ PRIMARY USERS: ${get("users")}
-✖ CORE DISCIPLINES: ${get("disciplines")}
-✖ PREFERRED OUTPUTS: ${get("outputs")}
-✖ BRAND OR TONE: ${get("tone")}
-✖ VALUES OR PRIORITIES: ${get("values")}
-✖ KEY MEMORY ELEMENTS: ${get("memory")}
-✖ MUST-HAVE BEHAVIORS: ${get("mustHave")}
-✖ SHOULD-HAVE FEATURES: ${get("shouldHave")}
-✖ COULD-HAVE EXTRAS: ${get("couldHave")}
-✖ WON’T-HAVES: ${get("wontHave")}
-
-✖ EXAMPLE INPUT/OUTPUT PAIRS:
-
-Input: Help me build a plugin release checklist for an audio company.
-Output: Absolutely. Here’s a clear, step-by-step release checklist tailored for audio plugin companies: [...]
-
-Input: What are the top legal risks of using AI in marketing?
-Output: Here are five key legal risks to consider, each with a brief explanation and mitigation strategy: [...]
-
-Input: Convert this philosophical argument into symbolic logic.
-Output: Sure. Based on standard propositional logic, here’s the symbolic breakdown: [...]
-
-The tone should be professional and clear.`;
-      }
-      document.getElementById("output").value = output;
-      document.getElementById("copyStatus").innerText = "";
-    }
-
-    function copyToClipboard() {
-      const output = document.getElementById("output");
-      output.select();
-      document.execCommand("copy");
-      const text = document.getElementById("output").value.trim();
-if (text.length > 0) {
-  document.getElementById("copyStatus").innerText = "Prompt copied!";
-} else {
-  document.getElementById("copyStatus").innerText = "Please generate a prompt first.";
-}
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
