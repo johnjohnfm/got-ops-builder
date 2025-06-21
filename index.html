@@ -1,178 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>GPT OPS Prompt Builder</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="theme.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: var(--font-family);
-      background-color: var(--brand-bg);
-      color: var(--brand-color);
+      font-family: 'Courier New', Courier, monospace;
+      background: #f9f9f9;
+      color: #111;
       padding: 2rem;
       max-width: 700px;
       margin: auto;
     }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 2rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 1rem;
-      margin-bottom: 0.5rem;
-    }
-
+    .form-section { margin-top: 2rem; }
+    .form-section.hidden { display: none; }
+    label { display: block; margin-top: 1rem; }
     textarea, input {
       width: 100%;
       padding: 0.5rem;
-      font-family: inherit;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      background: #fff;
-    }
-
-    button {
-      margin-top: 1.5rem;
-      margin-right: 1rem;
-      padding: 0.75rem 1.25rem;
-      font-size: 1rem;
-      background-color: var(--btn-bg);
-      color: var(--btn-color);
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    textarea.output {
-      height: 360px;
-      margin-top: 1rem;
-      white-space: pre-wrap;
-    }
-
-    .toggle-container {
-      margin-top: 2rem;
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-
-    .form-group {
-      transition: all 0.3s ease;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .tooltip {
-      font-size: 0.9rem;
-      background: #eee;
-      color: #333;
-      padding: 0.5rem;
-      border-radius: 5px;
       margin-top: 0.25rem;
-      border: 1px solid #ccc;
     }
-
-    .attribution, .legal {
-      font-size: 0.7rem;
-      color: #666;
-      text-align: center;
-      margin-top: 2rem;
-      line-height: 1.4;
-    }
-
-    .attribution a {
-      color: inherit;
-      text-decoration: underline;
+    .output { height: 250px; font-family: monospace; }
+    .copy-status {
+      font-size: 0.75rem;
+      color: green;
+      margin-top: 0.5rem;
     }
   </style>
 </head>
 <body>
   <h1>GPT OPS Prompt Builder</h1>
-
-  <div class="toggle-container">
-    <label><input type="radio" name="mode" value="quick" checked onchange="toggleMode()"> Quick Prompt</label>
-    <label><input type="radio" name="mode" value="full" onchange="toggleMode()"> Full Instructions</label>
+  <div>
+    <label><input type="radio" name="mode" value="quick" checked> QUICK Prompt</label>
+    <label><input type="radio" name="mode" value="full"> FULL Instructions</label>
   </div>
-
-  <div class="tooltip">
-    <strong>What is GPT OPS?</strong><br>
-    A modular system for writing custom GPT Instructions. It structures memory, tone, values, constraints, and example queries to guide GPT behavior with clarity and precision.
+  <div id="quickForm" class="form-section">
+    <h3>✖ QUICK PROMPT</h3>
+    <label>Project Name <input id="q_projectName"></label>
+    <label>Purpose <input id="q_purpose"></label>
+    <label>Core Disciplines <input id="q_disciplines"></label>
   </div>
-
-  <div id="quickForm" class="form-group">
-    <label>Project Name</label><input id="q_projectName" />
-    <label>Purpose</label><input id="q_purpose" />
-    <label>Core Disciplines</label><input id="q_disciplines" />
+  <div id="fullForm" class="form-section hidden">
+    <h3>✖ FULL INSTRUCTIONS</h3>
+    <label>Project Name <input id="projectName"></label>
+    <label>Purpose <input id="purpose"></label>
+    <label>Primary Users <input id="users"></label>
+    <label>Core Disciplines <input id="disciplines"></label>
+    <label>Preferred Outputs <input id="outputs"></label>
+    <label>Brand or Tone <input id="tone"></label>
+    <label>Values or Priorities <input id="values"></label>
+    <label>Key Memory Elements <input id="memory"></label>
+    <label>Must-Have Behaviors <input id="mustHave"></label>
+    <label>Should-Have Features <input id="shouldHave"></label>
+    <label>Could-Have Extras <input id="couldHave"></label>
+    <label>Won’t-Haves <input id="wontHave"></label>
   </div>
-
-  <div id="fullForm" class="form-group hidden">
-    <label>Project Name</label><input id="projectName" />
-    <label>Purpose</label><input id="purpose" />
-    <label>Primary Users</label><input id="users" />
-    <label>Core Disciplines</label><input id="disciplines" />
-    <label>Preferred Outputs</label><input id="outputs" />
-    <label>Brand or Tone</label><input id="tone" />
-    <label>Values or Priorities</label><input id="values" />
-    <label>Key Memory Elements</label><input id="memory" />
-    <label>Must-Have Behaviors</label><input id="mustHave" />
-    <label>Should-Have Features</label><input id="shouldHave" />
-    <label>Could-Have Extras</label><input id="couldHave" />
-    <label>Won’t-Haves</label><input id="wontHave" />
-  </div>
-
   <button onclick="generatePrompt()">Generate Instructions</button>
   <button onclick="copyToClipboard()">Copy to Clipboard</button>
-
+  <div class="copy-status" id="copyStatus"></div>
   <textarea id="output" class="output" readonly></textarea>
-
-  <p class="attribution">
-    Built with the GPT OPS System by <a href="https://johnjohnfm.uk" target="_blank">JOHNJOHNFM</a>
-  </p>
-  <p class="legal">
-    This tool is provided “as-is” under the custom GPT OPS License. <br />
-    Public or commercial use requires visible attribution. <br />
-    Redistribution or rebranding is prohibited without explicit permission.
-  </p>
-
   <script>
-    function toggleMode() {
-      const mode = document.querySelector('input[name="mode"]:checked').value;
-      document.getElementById("fullForm").classList.toggle("hidden", mode === "quick");
-      document.getElementById("quickForm").classList.toggle("hidden", mode === "full");
-      document.getElementById("output").value = '';
-    }
-
+    document.querySelectorAll('input[name="mode"]').forEach(input => {
+      input.addEventListener("change", () => {
+        const quick = document.getElementById("quickForm");
+        const full = document.getElementById("fullForm");
+        if (input.value === "quick") {
+          quick.classList.remove("hidden");
+          full.classList.add("hidden");
+        } else {
+          quick.classList.add("hidden");
+          full.classList.remove("hidden");
+        }
+        document.getElementById("output").value = '';
+      });
+    });
     function generatePrompt() {
-      const mode = document.querySelector('input[name="mode"]:checked").value;
-
+      const mode = document.querySelector('input[name="mode"]:checked').value;
+      let output = "";
       if (mode === "quick") {
-        const name = document.getElementById("q_projectName").value.trim();
-        const purpose = document.getElementById("q_purpose").value.trim();
-        const discipline = document.getElementById("q_disciplines").value.trim();
+        const name = document.getElementById("q_projectName").value;
+        const purpose = document.getElementById("q_purpose").value;
+        const disc = document.getElementById("q_disciplines").value;
+        output = `I am designing a custom ChatGPT Project. Please generate full Project Instructions using the GPT OPS framework, which emphasizes clarity, memory, modular behaviors, and ethical output formatting.
 
-        const prompt = `I am designing a custom ChatGPT Project. Please generate full Project Instructions using the GPT OPS framework, which emphasizes clarity, memory, modular behaviors, and ethical output formatting.
-
-This GPT should act as a ${discipline} assistant named “${name},” with the purpose of ${purpose}. Format the instructions using the standard GPT OPS categories, including example input/output pairs.
+This GPT should act as a ${disc} assistant named “${name},” with the purpose of ${purpose}. Format the instructions using the standard GPT OPS categories, including example input/output pairs.
 
 Use a tone that is professional and precise. Include behaviors, values, and constraints appropriate to this use case.`;
-
-        document.getElementById("output").value = prompt;
       } else {
-        const get = id => document.getElementById(id).value.trim();
-        const fullPrompt = `I am building a custom ChatGPT Project for a specific purpose. Please generate full Project Instructions following the GPT OPS framework using the following parameters:
+        const get = id => document.getElementById(id).value;
+        output = `I am building a custom ChatGPT Project. Please generate full Project Instructions following the GPT OPS framework using the following parameters:
 
 ✖ PROJECT NAME: ${get("projectName")}
 ✖ PURPOSE: ${get("purpose")}
@@ -189,26 +106,25 @@ Use a tone that is professional and precise. Include behaviors, values, and cons
 
 ✖ EXAMPLE INPUT/OUTPUT PAIRS:
 
-Input: Help me build a plugin release checklist for an audio company.  
+Input: Help me build a plugin release checklist for an audio company.
 Output: Absolutely. Here’s a clear, step-by-step release checklist tailored for audio plugin companies: [...]
 
-Input: What are the top legal risks of using AI in marketing?  
+Input: What are the top legal risks of using AI in marketing?
 Output: Here are five key legal risks to consider, each with a brief explanation and mitigation strategy: [...]
 
-Input: Convert this philosophical argument into symbolic logic.  
+Input: Convert this philosophical argument into symbolic logic.
 Output: Sure. Based on standard propositional logic, here’s the symbolic breakdown: [...]
 
-The tone should be professional and clear. You may include comments in the output to help me edit it later.`;
-
-        document.getElementById("output").value = fullPrompt;
+The tone should be professional and clear.`;
       }
+      document.getElementById("output").value = output;
+      document.getElementById("copyStatus").innerText = "";
     }
-
     function copyToClipboard() {
       const output = document.getElementById("output");
       output.select();
       document.execCommand("copy");
-      alert("Prompt copied to clipboard.");
+      document.getElementById("copyStatus").innerText = "Prompt copied!";
     }
   </script>
 </body>

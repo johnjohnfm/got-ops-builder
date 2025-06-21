@@ -8,28 +8,23 @@ A minimalist, embeddable web tool that generates formatted project instructions 
 
 ## 🔧 Features
 
-- Vertical form interface for entering GPT OPS fields  
-- One-click prompt generation in standard format  
-- Copy-to-clipboard functionality  
-- Fully responsive and customizable  
-- Can be embedded in Notion, Vercel, or any static site
+- Toggle between QUICK Prompt and FULL Instruction modes  
+- One-click prompt generation in GPT OPS format  
+- Copy-to-clipboard feedback built-in  
+- Uses monospaced UI for readability and structure  
+- Can be embedded or deployed anywhere
 
 ## 📦 Deployment
 
-To deploy:
-
 1. Clone the repository  
 2. Push to GitHub and enable GitHub Pages  
-3. Or import directly into [vercel.com](https://vercel.com) for instant hosting
+3. Or import to [vercel.com](https://vercel.com) for instant hosting
 
-Live example: `https://yourdomain.com/gpt-ops-builder`
-
-## ⚠️ Attribution
+## 🧾 Attribution
 
 Built by [JOHNJOHNFM](https://johnjohnfm.uk)  
-Framework © 2025 JOHNJOHNFM. All rights reserved.  
-For details, see the GPT OPS system license.
+For license terms, see LICENSE.md
 
-## 📎 License
+## 🪪 License
 
-This tool is released under the **JOHNJOHNFM Custom License** — personal and commercial use allowed with attribution. Redistribution requires permission.
+Released under the **JOHNJOHNFM Custom License v2.0** — non-commercial use permitted with attribution.
