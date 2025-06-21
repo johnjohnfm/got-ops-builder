@@ -55,14 +55,29 @@
     }
 
     textarea.output {
-      height: 300px;
+      height: 360px;
       margin-top: 1rem;
       white-space: pre-wrap;
+    }
+
+    .toggle-container {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .toggle-container label {
+      font-weight: normal;
     }
   </style>
 </head>
 <body>
   <h1>GPT OPS Prompt Builder</h1>
+
+  <div class="toggle-container">
+    <label><input type="radio" name="mode" value="full" checked> Full Instructions</label>
+    <label><input type="radio" name="mode" value="quick"> Quick Prompt</label>
+  </div>
 
   <div id="formFields">
     <label>Project Name</label><input id="projectName" />
@@ -87,7 +102,16 @@
   <script>
     function generatePrompt() {
       const get = id => document.getElementById(id).value.trim();
-      const prompt = `✖ PROJECT NAME: ${get("projectName")}
+      const mode = document.querySelector('input[name="mode"]:checked').value;
+
+      if (mode === "quick") {
+        const quickPrompt = `✖ QUICK PROMPT:
+Create full GPT Project Instructions using the GPT OPS method for a ${get("disciplines")} assistant called ${get("projectName")}, whose job is to ${get("purpose")}. Include memory, tone, tools, and examples.`;
+        document.getElementById("output").value = quickPrompt;
+      } else {
+        const fullPrompt = `I am building a custom ChatGPT Project for a specific purpose. Please generate full Project Instructions following the GPT OPS framework using the following parameters:
+
+✖ PROJECT NAME: ${get("projectName")}
 ✖ PURPOSE: ${get("purpose")}
 ✖ PRIMARY USERS: ${get("users")}
 ✖ CORE DISCIPLINES: ${get("disciplines")}
@@ -100,8 +124,20 @@
 ✖ COULD-HAVE EXTRAS: ${get("couldHave")}
 ✖ WON’T-HAVES: ${get("wontHave")}
 
-Also include 3–5 example input/output pairs showing how this GPT should respond to common user queries. The tone should be professional and clear. You may include comments in the output to help me edit it later.`;
-      document.getElementById("output").value = prompt;
+✖ EXAMPLE INPUT/OUTPUT PAIRS:
+
+Input: Help me build a plugin release checklist for an audio company.  
+Output: Absolutely. Here’s a clear, step-by-step release checklist tailored for audio plugin companies: [...]
+
+Input: What are the top legal risks of using AI in marketing?  
+Output: Here are five key legal risks to consider, each with a brief explanation and mitigation strategy: [...]
+
+Input: Convert this philosophical argument into symbolic logic.  
+Output: Sure. Based on standard propositional logic, here’s the symbolic breakdown: [...]
+
+The tone should be professional and clear. You may include comments in the output to help me edit it later.`;
+        document.getElementById("output").value = fullPrompt;
+      }
     }
 
     function copyToClipboard() {
