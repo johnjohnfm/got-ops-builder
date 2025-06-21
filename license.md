@@ -1,4 +1,4 @@
-# ✖️ GPT OPS LICENSE  
+# GPT OPS LICENSE  
 **Version 2.0**  
 **Created by [JOHNJOHNFM](https://johnjohnfm.uk)**
 
