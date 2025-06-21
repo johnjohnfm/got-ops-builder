@@ -64,6 +64,7 @@
       margin-top: 2rem;
       display: flex;
       gap: 1rem;
+      align-items: center;
     }
 
     .form-group {
@@ -73,23 +74,38 @@
     .hidden {
       display: none;
     }
+
+    .tooltip {
+      font-size: 0.9rem;
+      background: #eee;
+      color: #333;
+      padding: 0.5rem;
+      border-radius: 5px;
+      margin-top: 0.25rem;
+      border: 1px solid #ccc;
+    }
   </style>
 </head>
 <body>
   <h1>GPT OPS Prompt Builder</h1>
 
   <div class="toggle-container">
-    <label><input type="radio" name="mode" value="full" checked onchange="toggleMode()"> Full Instructions</label>
-    <label><input type="radio" name="mode" value="quick" onchange="toggleMode()"> Quick Prompt</label>
+    <label><input type="radio" name="mode" value="full" onchange="toggleMode()"> Full Instructions</label>
+    <label><input type="radio" name="mode" value="quick" checked onchange="toggleMode()"> Quick Prompt</label>
   </div>
 
-  <div id="quickForm" class="form-group hidden">
+  <div class="tooltip">
+    <strong>What is GPT OPS?</strong><br>
+    A modular system for writing custom GPT Instructions. It structures memory, tone, values, constraints, and example queries to guide GPT behavior with clarity and precision.
+  </div>
+
+  <div id="quickForm" class="form-group">
     <label>Project Name</label><input id="q_projectName" />
     <label>Purpose</label><input id="q_purpose" />
     <label>Core Disciplines</label><input id="q_disciplines" />
   </div>
 
-  <div id="fullForm" class="form-group">
+  <div id="fullForm" class="form-group hidden">
     <label>Project Name</label><input id="projectName" />
     <label>Purpose</label><input id="purpose" />
     <label>Primary Users</label><input id="users" />
@@ -112,25 +128,9 @@
   <script>
     function toggleMode() {
       const mode = document.querySelector('input[name="mode"]:checked').value;
-      const fullForm = document.getElementById("fullForm");
-      const quickForm = document.getElementById("quickForm");
-
-      if (mode === "quick") {
-        fullForm.classList.add("hidden");
-        quickForm.classList.remove("hidden");
-        clearForm(fullForm);
-      } else {
-        quickForm.classList.add("hidden");
-        fullForm.classList.remove("hidden");
-        clearForm(quickForm);
-      }
-
+      document.getElementById("fullForm").classList.toggle("hidden", mode === "quick");
+      document.getElementById("quickForm").classList.toggle("hidden", mode === "full");
       document.getElementById("output").value = '';
-    }
-
-    function clearForm(formElement) {
-      const inputs = formElement.querySelectorAll("input");
-      inputs.forEach(input => input.value = "");
     }
 
     function generatePrompt() {
@@ -140,9 +140,14 @@
         const name = document.getElementById("q_projectName").value.trim();
         const purpose = document.getElementById("q_purpose").value.trim();
         const discipline = document.getElementById("q_disciplines").value.trim();
-        const quickPrompt = `✖ QUICK PROMPT:
-Create full GPT Project Instructions using the GPT OPS method for a ${discipline} assistant called ${name}, whose job is to ${purpose}. Include memory, tone, tools, and examples.`;
-        document.getElementById("output").value = quickPrompt;
+
+        const prompt = `I am designing a custom ChatGPT Project. Please generate full Project Instructions using the GPT OPS framework, which emphasizes clarity, memory, modular behaviors, and ethical output formatting.
+
+This GPT should act as a ${discipline} assistant named “${name},” with the purpose of ${purpose}. Format the instructions using the standard GPT OPS categories, including example input/output pairs.
+
+Use a tone that is professional and precise. Include behaviors, values, and constraints appropriate to this use case.`;
+
+        document.getElementById("output").value = prompt;
       } else {
         const get = id => document.getElementById(id).value.trim();
         const fullPrompt = `I am building a custom ChatGPT Project for a specific purpose. Please generate full Project Instructions following the GPT OPS framework using the following parameters:
@@ -172,6 +177,7 @@ Input: Convert this philosophical argument into symbolic logic.
 Output: Sure. Based on standard propositional logic, here’s the symbolic breakdown: [...]
 
 The tone should be professional and clear. You may include comments in the output to help me edit it later.`;
+
         document.getElementById("output").value = fullPrompt;
       }
     }
