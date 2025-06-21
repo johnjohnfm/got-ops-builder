@@ -1,1 +1,1 @@
-See previous README version v1.3.2
+Updated README.md v1.3.4 with DIN layout logic.

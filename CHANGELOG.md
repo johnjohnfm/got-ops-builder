@@ -1,1 +1,1 @@
-v1.3.3: Visual & UX polish + favicon + modern font + pill buttons
+v1.3.4 — Layout + spacing overhaul with DIN grid system.

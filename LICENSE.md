@@ -1,1 +1,1 @@
-See previous LICENSE v2.0
+LICENSE v2.0 from GPT OPS System — attribution required.
