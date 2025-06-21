@@ -27,17 +27,16 @@ document.getElementById("generateButton").addEventListener("click", () => {
   if (isQuick) {
     const name = document.getElementById("q_projectName").value.trim();
     const purpose = document.getElementById("q_purpose").value.trim();
-    const disc = document.getElementById("q_disciplines").value.trim();
+    const disc = document.getElementById("q_disciplines").value.trim(); // Core Disciplines for [TYPE]
     if (!name || !purpose) {
       generateStatus.innerText = "Please fill required fields.";
       return;
     }
-    // Corrected QUICK prompt output logic
-    txt = `Create full GPT Project Instructions using the GPT OPS method for a [TYPE] assistant called ${name}, whose job is to ${purpose}. Include memory, tone, tools, and examples.`;
+    // Corrected QUICK prompt output to fill [TYPE], [NAME], and [MISSION]
+    txt = `Create full GPT Project Instructions using the GPT OPS method for a ${disc} assistant called ${name}, whose job is to ${purpose}. Include memory, tone, tools, and examples.`;
   } else {
     const get = id => document.getElementById(id).value.trim();
     const fields = ["projectName","purpose","users","disciplines","outputs","tone","values","memory","mustHave","shouldHave","couldHave","wontHave"];
-    // Corrected labels for FULL prompt output based on PDF
     const labels = [
         "X PROJECT NAME",
         "X PURPOSE",
@@ -52,27 +51,24 @@ document.getElementById("generateButton").addEventListener("click", () => {
         "X COULD-HAVE EXTRAS",
         "X WON’T-HAVES"
     ];
-    let parts = []; // Start with an empty array for parts
+    let parts = [];
 
     for (let i = 0; i < fields.length; i++) {
       const val = get(fields[i]);
-      if (i < 3 && !val) { // Project Name, Purpose, Primary Users are required
+      if (i < 3 && !val) {
         generateStatus.innerText = "Please fill required fields.";
         return;
       }
-      // Only add a line if the value is not empty
       if (val) {
           parts.push(`${labels[i]}: ${val}`);
       }
     }
 
-    // Add the main title at the beginning
     parts.unshift("✖ GPT OPS FULL INSTRUCTIONS");
 
     txt = parts.join("\n");
 
-    // Add the additional instructional text for FULL prompt, only if content was generated beyond just the title
-    if (parts.length > 1) { // Check if there's more than just the title
+    if (parts.length > 1) {
         txt += "\n\nAlso include 3-5 example input/output pairs showing how this GPT should respond to common user queries. The tone should be professional and clear. You may include comments in the output to help me edit it later.";
     }
   }
