@@ -66,20 +66,12 @@
       gap: 1rem;
     }
 
-    .toggle-container label {
-      font-weight: normal;
-    }
-
     .form-group {
-      opacity: 1;
-      transition: opacity 0.3s ease;
+      transition: all 0.3s ease;
     }
 
-    .form-group.hidden {
-      opacity: 0;
-      height: 0;
-      overflow: hidden;
-      pointer-events: none;
+    .hidden {
+      display: none;
     }
   </style>
 </head>
@@ -120,11 +112,25 @@
   <script>
     function toggleMode() {
       const mode = document.querySelector('input[name="mode"]:checked').value;
-      document.getElementById("fullForm").classList.toggle("hidden", mode === "quick");
-      document.getElementById("quickForm").classList.toggle("hidden", mode === "full");
+      const fullForm = document.getElementById("fullForm");
+      const quickForm = document.getElementById("quickForm");
 
-      document.querySelectorAll('input').forEach(input => input.value = '');
+      if (mode === "quick") {
+        fullForm.classList.add("hidden");
+        quickForm.classList.remove("hidden");
+        clearForm(fullForm);
+      } else {
+        quickForm.classList.add("hidden");
+        fullForm.classList.remove("hidden");
+        clearForm(quickForm);
+      }
+
       document.getElementById("output").value = '';
+    }
+
+    function clearForm(formElement) {
+      const inputs = formElement.querySelectorAll("input");
+      inputs.forEach(input => input.value = "");
     }
 
     function generatePrompt() {
