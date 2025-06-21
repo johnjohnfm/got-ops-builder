@@ -60,7 +60,7 @@ h1 {
   color: #000000;
 }
 .form-section {
-  margin-bottom: 24px; /* Changed from 32px to 24px */
+  margin-bottom: 16px;
 }
 .hidden {
   display: none;
@@ -71,7 +71,7 @@ label {
   color: #333333;
   margin-bottom: 8px;
 }
-input, textarea {
+input { /* Styles for input elements */
   width: 100%;
   padding: 12px;
   font-size: 15px;
@@ -79,7 +79,7 @@ input, textarea {
   background-color: #ffffff;
   border: 1px solid #cccccc;
   border-radius: 5px;
-  margin-bottom: 16px;
+  margin-bottom: 16px; /* New: Spacing after inputs, contributing to 24px rhythm */
   box-sizing: border-box;
 }
 .submit-button {
@@ -93,6 +93,7 @@ input, textarea {
   border: none;
   cursor: pointer;
   margin-right: 8px;
+  margin-bottom: 32px; /* New: Spacing after buttons as per spec */
 }
 .submit-button:hover {
   background-color: #fed001;
@@ -105,7 +106,7 @@ input, textarea {
   margin-bottom: 8px;
   font-style: italic;
 }
-.output {
+.output { /* Styles for the output textarea */
   height: 240px;
   padding: 12px;
   font-size: 15px;
