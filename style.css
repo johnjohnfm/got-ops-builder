@@ -126,3 +126,55 @@ footer a {
   color: #fed001;
   text-decoration: none;
 }
+
+/* Quick Info Callout Styling */
+#quickInfoContainer {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+
+#quickInfoIcon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.quick-info-callout {
+    position: absolute;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    min-width: 280px;
+    max-width: 350px;
+    pointer-events: none; /* Allows clicks to pass through when hidden */
+}
+
+.quick-info-callout.hidden {
+    display: none;
+}
+
+.quick-info-callout.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto; /* Re-enable pointer events when active */
+}
+
+.quick-info-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 10px 10px
