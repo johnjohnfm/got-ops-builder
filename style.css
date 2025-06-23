@@ -128,8 +128,8 @@ footer a {
 }
 
 /* Specific styling for the License v2.1 link */
-footer p a[href="./license.html"] { /* UPDATED SELECTOR HERE */
-  color: #333333; /* Updated to match surrounding text */
+footer p a[href="./license.html"] {
+  color: #333333; /* Corrected to match surrounding text */
 }
 
 /* Quick Info Callout Styling */
@@ -141,8 +141,8 @@ footer p a[href="./license.html"] { /* UPDATED SELECTOR HERE */
 }
 
 #quickInfoIcon {
-    width: 20px;
-    height: 20px;
+    width: 13px; /* Set to match font size */
+    height: 13px; /* Set to match font size */
     cursor: pointer;
     vertical-align: middle;
 }
