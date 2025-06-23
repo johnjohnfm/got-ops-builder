@@ -1,8 +1,4 @@
-diff --git a/README.md b/README.md
-index d0b1c5d4b8dee62df5ba572c568ed593181023ef..ee418bcfaa8029698cf92bfc94798527608599c2 100644
---- a/README.md
-+++ b/README.md
-@@ -29,29 +29,29 @@ Visit the live demo: [https://gpt-ops-builder.vercel.app/](https://gpt-ops-build
+Visit the live demo: [https://gpt-ops-builder.vercel.app/](https://gpt-ops-build
  ---
  
  ## ✖️ Usage
