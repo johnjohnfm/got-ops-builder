@@ -133,18 +133,15 @@ footer p a[href="./license.html"] {
 }
 
 /* Quick Info Callout Styling */
-#quickInfoContainer {
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 8px;
-}
-
+/* Removed #quickInfoContainer rules, moved relevant ones to #quickInfoIcon */
 #quickInfoIcon {
+    position: relative; /* Needed for positioning the absolute callout */
+    display: inline-block; /* Ensures it acts like text */
     width: 13px; /* Set to match font size */
     height: 13px; /* Set to match font size */
     cursor: pointer;
     vertical-align: middle;
+    margin-left: 8px; /* Space from preceding text */
 }
 
 .quick-info-callout {
