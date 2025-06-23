@@ -101,146 +101,64 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    // PositionCallout is now much simpler as CSS handles the bulk of positioning
     function positionCallout() {
-        const iconRect = quickInfoIcon.getBoundingClientRect(); // Get position relative to viewport for dimensions
-        const calloutRect = gptOpsInfoCallout.getBoundingClientRect(); // Get own dimensions
-
-        // Calculate top position: callout height + offset above the icon's top edge
-        // Since callout is absolutely positioned within the relative icon,
-        // we use negative value from icon's top.
-        const topOffset = -(calloutRect.height + 15); // 15px is the desired offset
-
-        // Calculate left position: center of the icon minus half of callout width
-        const leftOffset = (iconRect.width / 2) - (calloutRect.width / 2);
-
-        // Apply these offsets as CSS top/left values
-        gptOpsInfoCallout.style.top = `${topOffset}px`;
-        gptOpsInfoCallout.style.left = `${leftOffset}px`;
-
-        // Adjust arrow position to be horizontally centered on the icon's actual width
-        const arrowElement = gptOpsInfoCallout.querySelector('.quick-info-arrow');
-        if (arrowElement) {
-             arrowElement.style.left = `${iconRect.width / 2}px`; // Center on icon's width
-             arrowElement.style.transform = `translateX(-50%)`;
-        }
+        // No complex calculations needed here, CSS handles bottom, left, and transform
+        console.log('Callout position handled by CSS'); // ADDED FOR DEBUGGING
     }
 
     function showCallout() {
+        console.log('showCallout function called');
         if (dismissTimeout) {
             clearTimeout(dismissTimeout);
         }
         gptOpsInfoCallout.classList.remove('hidden');
-        // Force reflow to ensure CSS transition works from the 'hidden' state
-        void gptOpsInfoCallout.offsetWidth;
+        // This ensures the element's layout is calculated BEFORE the animation
+        // but positioning itself is primarily CSS-driven now.
+        void gptOpsInfoCallout.offsetWidth; 
         gptOpsInfoCallout.classList.add('active');
-        positionCallout(); // Position correctly after making it visible
+        // positionCallout(); // No longer explicitly needed for positioning
+        console.log('Callout should be active now.');
     }
 
     function hideCallout() {
-        gptOpsInfoCallout.classList.remove('active');
-        dismissTimeout = setTimeout(() => {
-            gptOpsInfoCallout.classList.add('hidden');
-        }, 300); // Match CSS transition duration
-    }
-
-    // Event Listeners for Hover
-    quickInfoIcon.addEventListener('mouseenter', showCallout);
-    quickInfoIcon.addEventListener('mouseleave', hideCallout);
-
-    // Keep the callout visible if the mouse moves onto it
-    gptOpsInfoCallout.addEventListener('mouseenter', () => {
-        if (dismissTimeout) {
-            clearTimeout(dismissTimeout); // Prevent auto-dismiss if mouse enters callout
-        }
-    });
-    gptOpsInfoCallout.addEventListener('mouseleave', hideCallout);
-
-    // For accessibility (keyboard users)
-    quickInfoIcon.addEventListener('focus', showCallout);
-    quickInfoIcon.addEventListener('blur', hideCallout);
-});
-
-// Quick Info Callout JavaScript Logic
-document.addEventListener('DOMContentLoaded', () => {
-    const quickInfoIcon = document.getElementById('quickInfoIcon');
-    const gptOpsInfoCallout = document.getElementById('gptOpsInfoCallout');
-
-    let dismissTimeout;
-
-    if (!quickInfoIcon || !gptOpsInfoCallout) {
-        console.error('Quick Info elements not found. Check your HTML IDs.');
-        return;
-    }
-
-    function positionCallout() {
-        const iconRect = quickInfoIcon.getBoundingClientRect();
-        const calloutRect = gptOpsInfoCallout.getBoundingClientRect();
-
-        const topOffset = -(calloutRect.height + 15);
-        const leftOffset = (iconRect.width / 2) - (calloutRect.width / 2);
-
-        gptOpsInfoCallout.style.top = `${topOffset}px`;
-        gptOpsInfoCallout.style.left = `${leftOffset}px`;
-
-        const arrowElement = gptOpsInfoCallout.querySelector('.quick-info-arrow');
-        if (arrowElement) {
-             arrowElement.style.left = `${iconRect.width / 2}px`;
-             arrowElement.style.transform = `translateX(-50%)`;
-        }
-        console.log('Callout positioned: top=' + topOffset + 'px, left=' + leftOffset + 'px'); // ADD THIS LINE
-    }
-
-    function showCallout() {
-        console.log('showCallout function called'); // ADD THIS LINE
-        if (dismissTimeout) {
-            clearTimeout(dismissTimeout);
-        }
-        gptOpsInfoCallout.classList.remove('hidden');
-        void gptOpsInfoCallout.offsetWidth;
-        gptOpsInfoCallout.classList.add('active');
-        positionCallout();
-        console.log('Callout should be active now.'); // ADD THIS LINE
-    }
-
-    function hideCallout() {
-        console.log('hideCallout function called'); // ADD THIS LINE
+        console.log('hideCallout function called');
         gptOpsInfoCallout.classList.remove('active');
         dismissTimeout = setTimeout(() => {
             gptOpsInfoCallout.classList.add('hidden');
         }, 300);
-        console.log('Callout should be hiding now.'); // ADD THIS LINE
+        console.log('Callout should be hiding now.');
     }
 
     // Event Listeners for Hover
     quickInfoIcon.addEventListener('mouseenter', () => {
-        console.log('Mouse entered quickInfoIcon'); // ADD THIS LINE
+        console.log('Mouse entered quickInfoIcon');
         showCallout();
     });
     quickInfoIcon.addEventListener('mouseleave', () => {
-        console.log('Mouse left quickInfoIcon'); // ADD THIS LINE
+        console.log('Mouse left quickInfoIcon');
         hideCallout();
     });
 
     // Keep the callout visible if the mouse moves onto it
     gptOpsInfoCallout.addEventListener('mouseenter', () => {
-        console.log('Mouse entered callout area'); // ADD THIS LINE
+        console.log('Mouse entered callout area');
         if (dismissTimeout) {
             clearTimeout(dismissTimeout);
         }
     });
     gptOpsInfoCallout.addEventListener('mouseleave', () => {
-        console.log('Mouse left callout area'); // ADD THIS LINE
+        console.log('Mouse left callout area');
         hideCallout();
     });
 
     // For accessibility (keyboard users)
     quickInfoIcon.addEventListener('focus', () => {
-        console.log('quickInfoIcon focused'); // ADD THIS LINE
+        console.log('quickInfoIcon focused');
         showCallout();
     });
     quickInfoIcon.addEventListener('blur', () => {
-        console.log('quickInfoIcon blurred'); // ADD THIS LINE
+        console.log('quickInfoIcon blurred');
         hideCallout();
     });
 });
-
