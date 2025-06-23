@@ -159,3 +159,88 @@ document.addEventListener('DOMContentLoaded', () => {
     quickInfoIcon.addEventListener('focus', showCallout);
     quickInfoIcon.addEventListener('blur', hideCallout);
 });
+
+// Quick Info Callout JavaScript Logic
+document.addEventListener('DOMContentLoaded', () => {
+    const quickInfoIcon = document.getElementById('quickInfoIcon');
+    const gptOpsInfoCallout = document.getElementById('gptOpsInfoCallout');
+
+    let dismissTimeout;
+
+    if (!quickInfoIcon || !gptOpsInfoCallout) {
+        console.error('Quick Info elements not found. Check your HTML IDs.');
+        return;
+    }
+
+    function positionCallout() {
+        const iconRect = quickInfoIcon.getBoundingClientRect();
+        const calloutRect = gptOpsInfoCallout.getBoundingClientRect();
+
+        const topOffset = -(calloutRect.height + 15);
+        const leftOffset = (iconRect.width / 2) - (calloutRect.width / 2);
+
+        gptOpsInfoCallout.style.top = `${topOffset}px`;
+        gptOpsInfoCallout.style.left = `${leftOffset}px`;
+
+        const arrowElement = gptOpsInfoCallout.querySelector('.quick-info-arrow');
+        if (arrowElement) {
+             arrowElement.style.left = `${iconRect.width / 2}px`;
+             arrowElement.style.transform = `translateX(-50%)`;
+        }
+        console.log('Callout positioned: top=' + topOffset + 'px, left=' + leftOffset + 'px'); // ADD THIS LINE
+    }
+
+    function showCallout() {
+        console.log('showCallout function called'); // ADD THIS LINE
+        if (dismissTimeout) {
+            clearTimeout(dismissTimeout);
+        }
+        gptOpsInfoCallout.classList.remove('hidden');
+        void gptOpsInfoCallout.offsetWidth;
+        gptOpsInfoCallout.classList.add('active');
+        positionCallout();
+        console.log('Callout should be active now.'); // ADD THIS LINE
+    }
+
+    function hideCallout() {
+        console.log('hideCallout function called'); // ADD THIS LINE
+        gptOpsInfoCallout.classList.remove('active');
+        dismissTimeout = setTimeout(() => {
+            gptOpsInfoCallout.classList.add('hidden');
+        }, 300);
+        console.log('Callout should be hiding now.'); // ADD THIS LINE
+    }
+
+    // Event Listeners for Hover
+    quickInfoIcon.addEventListener('mouseenter', () => {
+        console.log('Mouse entered quickInfoIcon'); // ADD THIS LINE
+        showCallout();
+    });
+    quickInfoIcon.addEventListener('mouseleave', () => {
+        console.log('Mouse left quickInfoIcon'); // ADD THIS LINE
+        hideCallout();
+    });
+
+    // Keep the callout visible if the mouse moves onto it
+    gptOpsInfoCallout.addEventListener('mouseenter', () => {
+        console.log('Mouse entered callout area'); // ADD THIS LINE
+        if (dismissTimeout) {
+            clearTimeout(dismissTimeout);
+        }
+    });
+    gptOpsInfoCallout.addEventListener('mouseleave', () => {
+        console.log('Mouse left callout area'); // ADD THIS LINE
+        hideCallout();
+    });
+
+    // For accessibility (keyboard users)
+    quickInfoIcon.addEventListener('focus', () => {
+        console.log('quickInfoIcon focused'); // ADD THIS LINE
+        showCallout();
+    });
+    quickInfoIcon.addEventListener('blur', () => {
+        console.log('quickInfoIcon blurred'); // ADD THIS LINE
+        hideCallout();
+    });
+});
+
