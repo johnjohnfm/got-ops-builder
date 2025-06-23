@@ -32,6 +32,7 @@ h1 {
   color: #666666;
   margin-bottom: 24px;
   line-height: 1.5;
+  position: relative; /* Positioning context for callout */
 }
 .mode-switch {
   display: flex;
@@ -70,6 +71,7 @@ label {
   font-weight: bold;
   color: #333333;
   margin-bottom: 8px;
+  display: block; /* Added for correct form layout */
 }
 input {
   width: 100%;
@@ -93,7 +95,7 @@ input {
   border: none;
   cursor: pointer;
   margin-right: 8px;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 }
 .submit-button:hover {
   background-color: #fed001;
@@ -108,65 +110,73 @@ input {
 }
 .output {
   height: 240px;
-  width: 350px;
+  width: 100%;
   padding: 12px;
   font-size: 15px;
   border: 1px solid #cccccc;
   border-radius: 5px;
   margin-bottom: 16px;
   box-sizing: border-box;
-  resize: none; /* New: Prevents user resizing */
+  resize: none;
 }
 footer {
   font-size: 12px;
   text-align: center;
   line-height: 1.5;
+  margin-top: 32px; /* Adjusted margin */
 }
 footer a {
   color: #fed001;
   text-decoration: none;
 }
-
-/* Specific styling for the License v2.1 link */
 footer p a[href="./license.html"] {
   color: #333333;
 }
 
-/* Quick Info Callout Styling */
+/* Quick Info Icon (Unicode) and Callout Styling */
 #quickInfoIcon {
-    position: relative;
-    display: inline-block;
-    width: 13px;
-    height: 13px;
+    /* Styles for the 'i' character as the icon */
+    position: relative; /* Crucial for positioning the absolute callout relative to this icon */
+    display: inline-block; /* Allows it to sit inline with text */
+    width: 13px; /* Match text height */
+    height: 13px; /* Match text height */
+    font-size: 13px; /* Controls size of 'i' character */
+    line-height: 13px; /* Vertically centers 'i' */
+    background: #fed001; /* Your brand color for the circle */
+    border-radius: 50%; /* Makes it a circle */
+    text-align: center; /* Centers 'i' horizontally */
+    font-weight: bold; /* Make 'i' bold */
+    color: #000; /* Color of the 'i' character */
     cursor: pointer;
-    vertical-align: middle;
-    margin-left: 8px;
+    vertical-align: middle; /* Aligns with text baseline */
+    margin-left: 8px; /* Space from preceding text */
 }
 
 .quick-info-callout {
     position: absolute;
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95); /* Slightly less transparent */
+    border: 1px solid #e0e0e0; /* Added subtle border */
     border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow */
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    padding: 15px 20px;
-    display: flex; /* FIXED: Now explicitly flex */
-    opacity: 0;
+    padding: 16px 20px; /* Adjusted padding */
+    display: flex;
     flex-direction: column;
     gap: 10px;
+    opacity: 0;
     transform: translateX(-50%) translateY(10px); /* Initial animation state */
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
     min-width: 280px;
-    max-width: 350px;
+    max-width: 320px; /* Adjusted max-width */
     pointer-events: none;
-    bottom: calc(100% + 15px); /* Position 15px above the icon */
-    left: 50%; /* Center horizontally */
+    bottom: calc(100% + 15px); /* Position 15px ABOVE the icon (100% is icon's height) */
+    left: 50%; /* Center horizontally over the icon */
 }
 
 .quick-info-callout.hidden {
-    display: none; /* Correctly hides the element */
+    display: none;
 }
 
 .quick-info-callout.active {
@@ -180,15 +190,16 @@ footer p a[href="./license.html"] {
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 0 10px 10px 10px;
-    border-color: transparent transparent rgba(255, 255, 255, 0.9) transparent;
-    bottom: -10px;
+    /* Corrected: Arrow points DOWN for an ABOVE-icon callout */
+    border-width: 8px 8px 0 8px; /* Arrow base is 16px wide, points down */
+    border-color: rgba(255, 255, 255, 0.95) transparent transparent transparent; /* Matches callout background */
+    top: 100%; /* Position at the bottom edge of the callout */
     left: 50%;
     transform: translateX(-50%);
-    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.05));
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1)); /* Shadow from top to bottom */
 }
 
-.quick-info-content-wrapper {
+.quick-info-content-wrapper { /* Added back for structure/flex */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -196,16 +207,16 @@ footer p a[href="./license.html"] {
 }
 
 .quick-info-title {
-    font-size: 1.1em;
+    font-size: 14px; /* Adjusted font size */
     font-weight: 600;
-    margin-bottom: 5px;
+    margin-bottom: 8px; /* Adjusted margin */
     color: #333;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 .quick-info-description {
-    font-size: 0.9em;
-    line-height: 1.5;
+    font-size: 13px; /* Adjusted font size */
+    line-height: 1.4;
     color: #555;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    margin: 0; /* Ensures no default margin */
 }
