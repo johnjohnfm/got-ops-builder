@@ -1,3 +1,8 @@
+// ✖️ GPT OPS Prompt Builder
+// Version: v1.3.5
+// https://gpt-ops-builder.vercel.app
+const VERSION = "v1.3.5";
+
 const toggle = document.getElementById("toggle");
 const quickForm = document.getElementById("quickForm");
 const fullForm = document.getElementById("fullForm");
