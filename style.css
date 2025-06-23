@@ -1,137 +1,3 @@
-body {
-  font-family: Helvetica, sans-serif;
-  background-color: #ffffff;
-  color: #333333;
-  max-width: 350px;
-  margin: 0 auto;
-  padding: 32px 16px;
-}
-.marquee-wrapper {
-  max-width: 350px;
-  overflow: hidden;
-  margin: 0 auto 24px;
-}
-.marquee-text {
-  display: inline-block;
-  white-space: nowrap;
-  animation: scroll-left 12s linear infinite;
-  color: #fed001;
-  font-weight: bold;
-  font-size: 14px;
-}
-@keyframes scroll-left {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
-}
-h1 {
-  text-align: center;
-  margin-bottom: 16px;
-}
-.instructions {
-  font-size: 13px;
-  color: #666666;
-  margin-bottom: 24px;
-  line-height: 1.5;
-}
-.mode-switch {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 24px;
-}
-.switch {
-  background-color: #000000;
-  border-radius: 20px;
-  padding: 4px;
-  display: flex;
-  gap: 8px;
-  cursor: pointer;
-  user-select: none;
-}
-.switch span {
-  padding: 6px 16px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #ffffff;
-  border-radius: 20px;
-}
-.switch.active-quick #quickLabel,
-.switch.active-full #fullLabel {
-  background-color: #fed001;
-  color: #000000;
-}
-.form-section {
-  margin-bottom: 16px;
-}
-.hidden {
-  display: none;
-}
-label {
-  font-size: 14px;
-  font-weight: bold;
-  color: #333333;
-  margin-bottom: 8px;
-}
-input {
-  width: 100%;
-  padding: 12px;
-  font-size: 15px;
-  color: #333333;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
-  margin-bottom: 16px;
-  box-sizing: border-box;
-}
-.submit-button {
-  font-size: 16px;
-  font-weight: 500;
-  background-color: #000000;
-  color: #ffffff;
-  padding: 0 24px;
-  height: 36px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  margin-right: 8px;
-  margin-bottom: 32px;
-}
-.submit-button:hover {
-  background-color: #fed001;
-  color: #000000;
-}
-.copy-status, .generate-status {
-  font-size: 12px;
-  color: #fed001;
-  margin-top: 8px;
-  margin-bottom: 8px;
-  font-style: italic;
-}
-.output {
-  height: 240px;
-  width: 350px;
-  padding: 12px;
-  font-size: 15px;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
-  margin-bottom: 16px;
-  box-sizing: border-box;
-  resize: none; /* New: Prevents user resizing */
-}
-footer {
-  font-size: 12px;
-  text-align: center;
-  line-height: 1.5;
-}
-footer a {
-  color: #fed001;
-  text-decoration: none;
-}
-
-/* Specific styling for the License v2.1 link */
-footer p a[href="./license.html"] {
-  color: #333333; /* Corrected to match surrounding text */
-}
-
 /* Quick Info Callout Styling */
 #quickInfoIcon {
     position: relative; /* Essential for positioning the absolute callout relative to this icon */
@@ -152,13 +18,12 @@ footer p a[href="./license.html"] {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     padding: 15px 20px;
-    /* TEMPORARY DEBUGGING FLAGS - WILL REMOVE LATER */
-    display: flex !important; /* Force display ON */
-    opacity: 0 !important; /* Keep initial opacity for fade-in */
-    /* END TEMPORARY */
+    /* FIXED: Removed conflicting debugging flags */
+    display: flex;
+    opacity: 0;
     flex-direction: column;
     gap: 10px;
-    transform: translateY(10px); /* Initial animation state */
+    transform: translateX(-50%) translateY(10px); /* Initial animation state */
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
     min-width: 280px;
     max-width: 350px;
@@ -166,15 +31,14 @@ footer p a[href="./license.html"] {
     /* CSS-DRIVEN POSITIONING */
     bottom: calc(100% + 15px); /* Position 15px above the icon (100% is icon's height) */
     left: 50%; /* Center horizontally */
-    transform: translateX(-50%) translateY(10px); /* Adjust for initial animation state */
 }
 
 .quick-info-callout.hidden {
-    display: none !important; /* Force display OFF when hidden */
+    display: none;
 }
 
 .quick-info-callout.active {
-    opacity: 1 !important; /* Force opacity ON */
+    opacity: 1;
     transform: translateX(-50%) translateY(0); /* Final state for animation */
     pointer-events: auto; /* Re-enable pointer events when active */
 }
