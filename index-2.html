@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GPT OPS Prompt Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="favicon.png" type="image/png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="marquee-wrapper">
+    <div class="marquee-text">JOHNJOHNFM JOHNJOHNFM JOHNJOHNFM JOHNJOHNFM</div>
+  </div>
+
+  <h1>GPT OPS Prompt Builder</h1>
+  <div class="instructions">
+    Fill out the fields below to generate a GPT OPS system prompt. Toggle between QUICK and FULL modes. Copy your result below.
+    <img
+        id="quickInfoIcon"
+        src="./info.circle.fill.png"
+        alt="Information about GPT-Ops Builder"
+        aria-describedby="gptOpsInfoCallout"
+        tabindex="0"
+    />
+    <div id="gptOpsInfoCallout" class="quick-info-callout hidden">
+      <div class="quick-info-arrow"></div>
+      <div class="quick-info-content-wrapper">
+        <h3 class="quick-info-title">About GPT-Ops Builder</h3>
+        <p class="quick-info-description">
+          GPT-Ops Builder: Your lightweight, web-based tool for crafting custom, AI-driven GPT Project Instructions. Simply input your operational data, hit 'Generate,' and instantly get precision-engineered GPT Project Instructions to automate tasks, generate code, create documentation, and more.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mode-switch">
+    <div id="toggle" class="switch active-quick" tabindex="0" role="button">
+      <span id="quickLabel">QUICK</span>
+      <span id="fullLabel">FULL</span>
+    </div>
+  </div>
+
+  <div id="quickForm" class="form-section">
+    <h3>✖ QUICK PROMPT</h3>
+    <label for="q_projectName">Project Name*</label>
+    <input id="q_projectName" type="text" placeholder="e.g. Ethics Copilot" />
+    <label for="q_purpose">Purpose*</label>
+    <input id="q_purpose" type="text" placeholder="e.g. Helps users analyze moral arguments and clarify value claims" />
+    <label for="q_disciplines">Core Disciplines*</label>
+    <input id="q_disciplines" type="text" placeholder="e.g. Ethical reasoning, debate, moral philosophy" />
+  </div>
+
+  <div id="fullForm" class="form-section hidden">
+    <h3>✖ FULL INSTRUCTIONS</h3>
+    <label for="projectName">Project Name*</label>
+    <input id="projectName" type="text" placeholder="e.g. Philosopher in Residence" />
+    <label for="purpose">Purpose*</label>
+    <input id="purpose" type="text" placeholder="e.g. Help users resolve ethical dilemmas and clarify values" />
+    <label for="users">Primary Users*</label>
+    <input id="users" type="text" placeholder="e.g. Students, ethicists, priests, Redditors" />
+    <label for="disciplines">Core Disciplines*</label>
+    <input id="disciplines" type="text" placeholder="e.g. Ethics, logic, metaphysics, theology" />
+    <label for="outputs">Preferred Outputs</label>
+    <input id="outputs" type="text" placeholder="e.g. Clarifications, analogies, summaries, hot takes" />
+    <label for="tone">Brand or Tone</label>
+    <input id="tone" type="text" placeholder="e.g. Stoic, sarcastic, sincere, meme-literate" />
+    <label for="values">Values or Priorities</label>
+    <input id="values" type="text" placeholder="e.g. Truth, empathy, logic, anti-cultism" />
+    <label for="memory">Key Memory Elements</label>
+    <input id="memory" type="text" placeholder="e.g. Famous quotes, favorite philosophers, unfinished arguments" />
+    <label for="mustHave">Must-Have Behaviors</label>
+    <input id="mustHave" type="text" placeholder="e.g. Quote Nietzsche, cite Wittgenstein, avoid productivity-bot logic" />
+    <label for="shouldHave">Should-Have Features</label>
+    <input id="shouldHave" type="text" placeholder="e.g. Remembers names, recalls metaphors, anti-condescension" />
+    <label for="couldHave">Could-Have Extras</label>
+    <input id="couldHave" type="text" placeholder="e.g. Recites Aquinas memes, jokes about Heidegger" />
+    <label for="wontHave">Won’t-Haves</label>
+    <input id="wontHave" type="text" placeholder="e.g. Tarot, dream decoding, manifesting nonsense" />
+  </div>
+
+  <div class="generate-status" id="generateStatus"></div>
+  <button class="submit-button" id="generateButton">Generate</button>
+
+  <textarea id="output" class="output" readonly></textarea>
+  <div class="copy-status" id="copyStatus"></div>
+  <button class="submit-button" id="copyButton">Copy</button>
+
+  <footer>
+    <p>Built with the GPT OPS System by <a href="https://johnjohnfm.uk" target="_blank">JOHNJOHNFM</a></p>
+    <p>This tool is provided “as-is” under the GPT OPS <a href="./license.html" target="_blank">License v2.1</a>. Public and Commercial use requires Attribution or License. Redistribution is prohibited.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
