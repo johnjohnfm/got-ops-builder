@@ -153,3 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // REMOVED: No 'click' toggle as per "HOVER ONLY" requirement
 });
+
+// © 2025 John E. Reynolds. All rights reserved.
+// Licensed under GPT-OPS License v2.1 — https://gpt-ops-builder.vercel.app/license.html
+// Authored as part of the GPT-OPS Instruction Architecture by JOHNJOHNFM.
+
