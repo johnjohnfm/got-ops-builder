@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // PositionCallout is now much simpler as CSS handles the bulk of positioning
     function positionCallout() {
         // No complex calculations needed here, CSS handles bottom, left, and transform
-        console.log('Callout position handled by CSS'); // ADDED FOR DEBUGGING
+        console.log('Callout position handled by CSS');
     }
 
     function showCallout() {
@@ -113,9 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clearTimeout(dismissTimeout);
         }
         gptOpsInfoCallout.classList.remove('hidden');
-        // This ensures the element's layout is calculated BEFORE the animation
-        // but positioning itself is primarily CSS-driven now.
-        void gptOpsInfoCallout.offsetWidth; 
+        void gptOpsInfoCallout.offsetWidth;
         gptOpsInfoCallout.classList.add('active');
         // positionCallout(); // No longer explicitly needed for positioning
         console.log('Callout should be active now.');
