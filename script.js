@@ -6,6 +6,9 @@ const copyStatus = document.getElementById("copyStatus");
 const output = document.getElementById("output");
 
 // Form toggle functionality
+document.querySelectorAll('input[name="formMode"], .switch').forEach(el => {
+  // This line might be redundant if the elements are toggle and labels, but harmless.
+});
 toggle.addEventListener("click", () => {
   const isQuick = toggle.classList.contains("active-quick");
   toggle.classList.toggle("active-quick", !isQuick);
