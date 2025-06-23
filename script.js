@@ -88,3 +88,83 @@ document.getElementById("copyButton").addEventListener("click", () => {
     copyStatus.innerText = "Please generate a prompt first.";
   }
 });
+
+// Quick Info Callout JavaScript Logic
+document.addEventListener('DOMContentLoaded', () => {
+    const quickInfoIcon = document.getElementById('quickInfoIcon');
+    const gptOpsInfoCallout = document.getElementById('gptOpsInfoCallout');
+    const quickInfoContainer = document.getElementById('quickInfoContainer');
+
+    let dismissTimeout;
+
+    if (!quickInfoIcon || !gptOpsInfoCallout || !quickInfoContainer) {
+        console.error('Quick Info elements not found. Check your HTML IDs.');
+        return;
+    }
+
+    function positionCallout() {
+        const iconRect = quickInfoIcon.getBoundingClientRect();
+        const calloutRect = gptOpsInfoCallout.getBoundingClientRect();
+        
+        // Calculate horizontal center of the icon relative to the viewport
+        const iconCenterX = iconRect.left + (iconRect.width / 2);
+
+        // Calculate desired left position for the callout to be centered under the icon
+        let calloutLeft = iconCenterX - (calloutRect.width / 2);
+
+        // Basic boundary checking for the left edge
+        if (calloutLeft < 10) { // Keep 10px from left edge
+            calloutLeft = 10;
+        }
+
+        // Calculate the top position (above the icon)
+        const calloutTop = iconRect.top - calloutRect.height - 15; // 15px offset from icon
+
+        // Apply positions
+        gptOpsInfoCallout.style.left = `${calloutLeft}px`;
+        gptOpsInfoCallout.style.top = `${calloutTop}px`;
+
+        // Adjust arrow position if the callout shifted due to boundary checks
+        // This makes the arrow always point to the original icon's center
+        const arrowElement = gptOpsInfoCallout.querySelector('.quick-info-arrow');
+        if (arrowElement) {
+            const arrowLeftRelativeToCallout = iconCenterX - calloutLeft;
+            arrowElement.style.left = `${arrowLeftRelativeToCallout}px`;
+            arrowElement.style.transform = `translateX(-50%)`;
+        }
+    }
+
+    function showCallout() {
+        if (dismissTimeout) {
+            clearTimeout(dismissTimeout);
+        }
+        gptOpsInfoCallout.classList.remove('hidden');
+        // Force reflow to ensure CSS transition works from the 'hidden' state
+        void gptOpsInfoCallout.offsetWidth;
+        gptOpsInfoCallout.classList.add('active');
+        positionCallout(); // Position correctly after making it visible
+    }
+
+    function hideCallout() {
+        gptOpsInfoCallout.classList.remove('active');
+        dismissTimeout = setTimeout(() => {
+            gptOpsInfoCallout.classList.add('hidden');
+        }, 300); // Match CSS transition duration
+    }
+
+    // Event Listeners for Hover
+    quickInfoIcon.addEventListener('mouseenter', showCallout);
+    quickInfoIcon.addEventListener('mouseleave', hideCallout);
+
+    // Keep the callout visible if the mouse moves onto it
+    gptOpsInfoCallout.addEventListener('mouseenter', () => {
+        if (dismissTimeout) {
+            clearTimeout(dismissTimeout); // Prevent auto-dismiss if mouse enters callout
+        }
+    });
+    gptOpsInfoCallout.addEventListener('mouseleave', hideCallout);
+
+    // For accessibility (keyboard users)
+    quickInfoIcon.addEventListener('focus', showCallout);
+    quickInfoIcon.addEventListener('blur', hideCallout);
+});
