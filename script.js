@@ -93,44 +93,35 @@ document.getElementById("copyButton").addEventListener("click", () => {
 document.addEventListener('DOMContentLoaded', () => {
     const quickInfoIcon = document.getElementById('quickInfoIcon');
     const gptOpsInfoCallout = document.getElementById('gptOpsInfoCallout');
-    const quickInfoContainer = document.getElementById('quickInfoContainer');
 
     let dismissTimeout;
 
-    if (!quickInfoIcon || !gptOpsInfoCallout || !quickInfoContainer) {
+    if (!quickInfoIcon || !gptOpsInfoCallout) {
         console.error('Quick Info elements not found. Check your HTML IDs.');
         return;
     }
 
     function positionCallout() {
-        const iconRect = quickInfoIcon.getBoundingClientRect();
-        const calloutRect = gptOpsInfoCallout.getBoundingClientRect();
-        
-        // Calculate horizontal center of the icon relative to the viewport
-        const iconCenterX = iconRect.left + (iconRect.width / 2);
+        const iconRect = quickInfoIcon.getBoundingClientRect(); // Get position relative to viewport for dimensions
+        const calloutRect = gptOpsInfoCallout.getBoundingClientRect(); // Get own dimensions
 
-        // Calculate desired left position for the callout to be centered under the icon
-        let calloutLeft = iconCenterX - (calloutRect.width / 2);
+        // Calculate top position: callout height + offset above the icon's top edge
+        // Since callout is absolutely positioned within the relative icon,
+        // we use negative value from icon's top.
+        const topOffset = -(calloutRect.height + 15); // 15px is the desired offset
 
-        // Basic boundary checking for the left edge
-        if (calloutLeft < 10) { // Keep 10px from left edge
-            calloutLeft = 10;
-        }
+        // Calculate left position: center of the icon minus half of callout width
+        const leftOffset = (iconRect.width / 2) - (calloutRect.width / 2);
 
-        // Calculate the top position (above the icon)
-        const calloutTop = iconRect.top - calloutRect.height - 15; // 15px offset from icon
+        // Apply these offsets as CSS top/left values
+        gptOpsInfoCallout.style.top = `${topOffset}px`;
+        gptOpsInfoCallout.style.left = `${leftOffset}px`;
 
-        // Apply positions
-        gptOpsInfoCallout.style.left = `${calloutLeft}px`;
-        gptOpsInfoCallout.style.top = `${calloutTop}px`;
-
-        // Adjust arrow position if the callout shifted due to boundary checks
-        // This makes the arrow always point to the original icon's center
+        // Adjust arrow position to be horizontally centered on the icon's actual width
         const arrowElement = gptOpsInfoCallout.querySelector('.quick-info-arrow');
         if (arrowElement) {
-            const arrowLeftRelativeToCallout = iconCenterX - calloutLeft;
-            arrowElement.style.left = `${arrowLeftRelativeToCallout}px`;
-            arrowElement.style.transform = `translateX(-50%)`;
+             arrowElement.style.left = `${iconRect.width / 2}px`; // Center on icon's width
+             arrowElement.style.transform = `translateX(-50%)`;
         }
     }
 
