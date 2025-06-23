@@ -127,8 +127,8 @@ footer a {
   text-decoration: none;
 }
 
-/* Specific styling for the License v2.0 link */
-footer p a[href="./LICENSE.md"] {
+/* Specific styling for the License v2.1 link */
+footer p a[href="./license.html"] { /* UPDATED SELECTOR HERE */
   color: #333333; /* Updated to match surrounding text */
 }
 
