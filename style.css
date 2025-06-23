@@ -158,12 +158,12 @@ footer p a[href="./license.html"] {
     flex-direction: column;
     gap: 10px;
     opacity: 0;
-    transform: translateX(-50%) translateY(10px); /* Initial animation state */
+    transform: translateX(-50%) translateY(-10px); /* Initial animation state (moves UP from final pos) */
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
     min-width: 280px;
     max-width: 320px;
     pointer-events: none;
-    bottom: calc(100% + 15px); /* Position 15px ABOVE the icon's line in instructions */
+    top: calc(100% + 15px); /* Position 15px BELOW the icon's line in instructions */
     left: 50%; /* Center horizontally relative to .instructions parent */
 }
 
@@ -182,13 +182,13 @@ footer p a[href="./license.html"] {
     width: 0;
     height: 0;
     border-style: solid;
-    /* Corrected: Arrow points DOWN for an ABOVE-icon callout */
-    border-width: 8px 8px 0 8px; /* Arrow base 16px, points down */
-    border-color: rgba(255, 255, 255, 0.95) transparent transparent transparent; /* Matches callout background */
-    top: 100%; /* Position at the bottom edge of the callout */
+    /* Arrow points UP for a BELOW-icon callout */
+    border-width: 0 8px 8px 8px; /* Arrow base 16px, points up */
+    border-color: transparent transparent rgba(255, 255, 255, 0.95) transparent; /* Matches callout background */
+    bottom: 100%; /* Position at the top edge of the callout */
     left: 50%;
     transform: translateX(-50%);
-    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, 0.1)); /* Shadow casts upwards */
 }
 
 .quick-info-content-wrapper {
