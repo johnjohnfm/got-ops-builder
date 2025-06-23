@@ -133,9 +133,8 @@ footer p a[href="./license.html"] {
 }
 
 /* Quick Info Callout Styling */
-/* Removed #quickInfoContainer rules, moved relevant ones to #quickInfoIcon */
 #quickInfoIcon {
-    position: relative; /* Needed for positioning the absolute callout */
+    position: relative; /* Essential for positioning the absolute callout relative to this icon */
     display: inline-block; /* Ensures it acts like text */
     width: 13px; /* Set to match font size */
     height: 13px; /* Set to match font size */
@@ -162,6 +161,11 @@ footer p a[href="./license.html"] {
     min-width: 280px;
     max-width: 350px;
     pointer-events: none; /* Allows clicks to pass through when hidden */
+    /* NEW CSS-DRIVEN POSITIONING */
+    bottom: calc(100% + 15px); /* Position 15px above the icon (100% is icon's height) */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%) translateY(10px); /* Adjust for initial animation state */
+    /* END NEW CSS */
 }
 
 .quick-info-callout.hidden {
@@ -170,7 +174,7 @@ footer p a[href="./license.html"] {
 
 .quick-info-callout.active {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0); /* Final state for animation */
     pointer-events: auto; /* Re-enable pointer events when active */
 }
 
@@ -181,11 +185,16 @@ footer p a[href="./license.html"] {
     border-style: solid;
     border-width: 0 10px 10px 10px;
     border-color: transparent transparent rgba(255, 255, 255, 0.9) transparent;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, 0.05));
+    bottom: -10px; /* Position 10px below the callout content */
+    left: 50%; /* Center on callout */
+    transform: translateX(-50%); /* Adjust for centering */
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.05)); /* Shadow below arrow */
 }
+/* Adjust filter direction for arrow shadow if it's pointing up (from bottom) */
+.quick-info-arrow {
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.05));
+}
+
 
 .quick-info-content-wrapper {
     display: flex;
