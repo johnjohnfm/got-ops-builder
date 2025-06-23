@@ -158,3 +158,17 @@ document.addEventListener('DOMContentLoaded', () => {
 // Licensed under GPT-OPS License v2.1 — https://gpt-ops-builder.vercel.app/license.html
 // Authored as part of the GPT-OPS Instruction Architecture by JOHNJOHNFM.
 
+function copyToClipboard() {
+  const outputText = document.getElementById("output").value;
+  const hiddenAttribution = `
+
+`;
+
+  navigator.clipboard.writeText(outputText + hiddenAttribution)
+    .then(() => {
+      alert("Output copied to clipboard with GPT-Ops attribution.");
+    })
+    .catch(err => {
+      console.error('Failed to copy:', err);
+    });
+}
