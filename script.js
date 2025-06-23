@@ -4,9 +4,8 @@ const fullForm = document.getElementById("fullForm");
 const generateStatus = document.getElementById("generateStatus");
 const copyStatus = document.getElementById("copyStatus");
 const output = document.getElementById("output");
-document.querySelectorAll('input[name="formMode"], .switch').forEach(el => {
-  // The switch itself triggers form toggle
-});
+
+// Form toggle functionality
 toggle.addEventListener("click", () => {
   const isQuick = toggle.classList.contains("active-quick");
   toggle.classList.toggle("active-quick", !isQuick);
@@ -18,6 +17,7 @@ toggle.addEventListener("click", () => {
   generateStatus.innerText = "";
 });
 
+// Generate button functionality
 document.getElementById("generateButton").addEventListener("click", () => {
   const isQuick = toggle.classList.contains("active-quick");
   let txt = "";
@@ -27,12 +27,11 @@ document.getElementById("generateButton").addEventListener("click", () => {
   if (isQuick) {
     const name = document.getElementById("q_projectName").value.trim();
     const purpose = document.getElementById("q_purpose").value.trim();
-    const disc = document.getElementById("q_disciplines").value.trim(); // Core Disciplines for [TYPE]
-    if (!name || !purpose) {
+    const disc = document.getElementById("q_disciplines").value.trim();
+    if (!name || !purpose || !disc) { // Ensure all 3 quick fields are required
       generateStatus.innerText = "Please fill required fields.";
       return;
     }
-    // Corrected QUICK prompt output to fill [TYPE], [NAME], and [MISSION]
     txt = `Create full GPT Project Instructions using the GPT OPS method for a ${disc} assistant called ${name}, whose job is to ${purpose}. Include memory, tone, tools, and examples.`;
   } else {
     const get = id => document.getElementById(id).value.trim();
@@ -49,13 +48,14 @@ document.getElementById("generateButton").addEventListener("click", () => {
         "X MUST-HAVE BEHAVIORS",
         "X SHOULD-HAVE FEATURES",
         "X COULD-HAVE EXTRAS",
-        "X WON’T-HAVES"
+        "X WON'T-HAVES"
     ];
     let parts = [];
 
     for (let i = 0; i < fields.length; i++) {
       const val = get(fields[i]);
-      if (i < 3 && !val) {
+      // Project Name, Purpose, Primary Users, Core Disciplines are required (first 4 fields)
+      if (i < 4 && !val) {
         generateStatus.innerText = "Please fill required fields.";
         return;
       }
@@ -65,7 +65,6 @@ document.getElementById("generateButton").addEventListener("click", () => {
     }
 
     parts.unshift("✖ GPT OPS FULL INSTRUCTIONS");
-
     txt = parts.join("\n");
 
     if (parts.length > 1) {
@@ -75,88 +74,79 @@ document.getElementById("generateButton").addEventListener("click", () => {
   output.value = txt;
 });
 
+// Copy button functionality (modern API with fallback)
 document.getElementById("copyButton").addEventListener("click", () => {
   const text = output.value.trim();
   generateStatus.innerText = "";
   copyStatus.innerText = "";
 
   if (text) {
-    output.select();
-    document.execCommand("copy");
-    copyStatus.innerText = "Prompt copied!";
+    // Use modern Clipboard API
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        copyStatus.innerText = "Prompt copied!";
+      }).catch(() => {
+        // Fallback if Clipboard API fails
+        output.select();
+        document.execCommand("copy");
+        copyStatus.innerText = "Prompt copied! (Fallback)";
+      });
+    } else {
+      // Old fallback for very old browsers
+      output.select();
+      document.execCommand("copy");
+      copyStatus.innerText = "Prompt copied! (Fallback)";
+    }
   } else {
     copyStatus.innerText = "Please generate a prompt first.";
   }
 });
 
-// Quick Info Callout JavaScript Logic
+
+// Quick Info Callout functionality
 document.addEventListener('DOMContentLoaded', () => {
-    const quickInfoIcon = document.getElementById('quickInfoIcon');
-    const gptOpsInfoCallout = document.getElementById('gptOpsInfoCallout');
+  const quickInfoIcon = document.getElementById('quickInfoIcon');
+  const gptOpsInfoCallout = document.getElementById('gptOpsInfoCallout');
+  let dismissTimeout;
 
-    let dismissTimeout;
+  if (!quickInfoIcon || !gptOpsInfoCallout) {
+    console.error('Quick Info elements not found');
+    return;
+  }
 
-    if (!quickInfoIcon || !gptOpsInfoCallout) {
-        console.error('Quick Info elements not found. Check your HTML IDs.');
-        return;
+  // No complex positionCallout() needed, CSS handles it
+  function showCallout() {
+    if (dismissTimeout) {
+      clearTimeout(dismissTimeout);
     }
+    gptOpsInfoCallout.classList.remove('hidden');
+    // Force reflow for transform transition
+    void gptOpsInfoCallout.offsetWidth; 
+    gptOpsInfoCallout.classList.add('active');
+  }
 
-    // PositionCallout is now much simpler as CSS handles the bulk of positioning
-    function positionCallout() {
-        // No complex calculations needed here, CSS handles bottom, left, and transform
-        console.log('Callout position handled by CSS');
+  function hideCallout() {
+    gptOpsInfoCallout.classList.remove('active');
+    dismissTimeout = setTimeout(() => {
+      gptOpsInfoCallout.classList.add('hidden');
+    }, 300); // Match CSS transition duration
+  }
+
+  // HOVER ONLY: Event Listeners for Hover
+  quickInfoIcon.addEventListener('mouseenter', showCallout);
+  quickInfoIcon.addEventListener('mouseleave', hideCallout);
+
+  // Keep callout visible when hovering over it (to prevent flicker)
+  gptOpsInfoCallout.addEventListener('mouseenter', () => {
+    if (dismissTimeout) {
+      clearTimeout(dismissTimeout);
     }
+  });
+  gptOpsInfoCallout.addEventListener('mouseleave', hideCallout);
 
-    function showCallout() {
-        console.log('showCallout function called');
-        if (dismissTimeout) {
-            clearTimeout(dismissTimeout);
-        }
-        gptOpsInfoCallout.classList.remove('hidden');
-        void gptOpsInfoCallout.offsetWidth;
-        gptOpsInfoCallout.classList.add('active');
-        // positionCallout(); // No longer explicitly needed for positioning
-        console.log('Callout should be active now.');
-    }
+  // Keyboard accessibility
+  quickInfoIcon.addEventListener('focus', showCallout);
+  quickInfoIcon.addEventListener('blur', hideCallout);
 
-    function hideCallout() {
-        console.log('hideCallout function called');
-        gptOpsInfoCallout.classList.remove('active');
-        dismissTimeout = setTimeout(() => {
-            gptOpsInfoCallout.classList.add('hidden');
-        }, 300);
-        console.log('Callout should be hiding now.');
-    }
-
-    // Event Listeners for Hover
-    quickInfoIcon.addEventListener('mouseenter', () => {
-        console.log('Mouse entered quickInfoIcon');
-        showCallout();
-    });
-    quickInfoIcon.addEventListener('mouseleave', () => {
-        console.log('Mouse left quickInfoIcon');
-        hideCallout();
-    });
-
-    // Keep the callout visible if the mouse moves onto it
-    gptOpsInfoCallout.addEventListener('mouseenter', () => {
-        console.log('Mouse entered callout area');
-        if (dismissTimeout) {
-            clearTimeout(dismissTimeout);
-        }
-    });
-    gptOpsInfoCallout.addEventListener('mouseleave', () => {
-        console.log('Mouse left callout area');
-        hideCallout();
-    });
-
-    // For accessibility (keyboard users)
-    quickInfoIcon.addEventListener('focus', () => {
-        console.log('quickInfoIcon focused');
-        showCallout();
-    });
-    quickInfoIcon.addEventListener('blur', () => {
-        console.log('quickInfoIcon blurred');
-        hideCallout();
-    });
+  // REMOVED: No 'click' toggle as per "HOVER ONLY" requirement
 });
