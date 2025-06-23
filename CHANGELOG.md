@@ -1,4 +1,4 @@
-# ✖️ GPT-OPS CHANGELOG
+# ✖️ v1.3.5 — Silent Attribution + Info Pop
 
 ![Version](https://img.shields.io/badge/version-1.3.5-black?style=flat-square)
 ![Status](https://img.shields.io/badge/status-Stable-brightgreen?style=flat-square)
@@ -6,71 +6,64 @@
 
 ---
 
-## ✖️ v1.3.5 — Silent Attribution + Info Pop  
-**Release Date:** June 23, 2025  
-**Status:** ✅ Verified (Audit complete)
+### ✨ Summary
 
-This release introduces a hardened attribution system, improved clipboard interaction, and a refined quick-info callout with full accessibility and animation polish.
+This release introduces a hardened attribution system, modern clipboard handling, and a fully accessible info callout for user guidance. UI polish and licensing have been aligned across all files.
 
 ---
 
 ### 🔧 `script.js` Enhancements
 
-- `hiddenAttribution` is now globally scoped for universal access
-- `copyToClipboard()` refactored into `async` function using `navigator.clipboard.writeText()`, with `execCommand('copy')` fallback
-- Native `copy` event listener added to `#output` to silently append attribution on manual copy
-- Copy button updated to use new clipboard logic
-- Attribution now includes extra `\n` newline for visual separation
-
-#### Quick Info Logic:
-- Added `showCallout()` and `hideCallout()` for toggling visibility
-- Handles `mouseenter`, `mouseleave`, `focus`, and `blur` for accessibility
-- Removed all JS-based XY positioning in favor of CSS anchors
+- Refactored `copyToClipboard()` to async/await using `navigator.clipboard.writeText()`
+- Added fallback to `document.execCommand()` for legacy support
+- Global `hiddenAttribution` constant includes extra `\n` for spacing
+- Clipboard listener appends attribution on manual copy
+- Modularized with `execCopy()` helper
 
 ---
 
-### 🎨 `style.css` Additions
+### 🎨 `style.css` Updates
 
-- `.quick-info-callout` styled with:
-  - `position: absolute`, `backdrop-filter`, `box-shadow`, and transition animations
-  - `.quick-info-arrow` visually connects callout to info icon
-- `.instructions` container updated with `position: relative`
-- Text elements `.quick-info-title` and `.quick-info-description` introduced for internal formatting
-
----
-
-### 📄 `index.html` Updates
-
-- Info icon (`#quickInfoIcon`) added with proper `aria-describedby` and `tabindex`
-- `.quick-info-callout` block structured for accessibility + animation
-- Footer: “License v2.1” now links to `./license.html` with `target="_blank"`
+- Added `.quick-info-callout` and `.quick-info-arrow` for animated tooltip behavior
+- Anchored `.instructions` with `position: relative` for layout integrity
+- Styled tooltip for mobile, keyboard, and hover access
+- Minor layout refinements (marquee, footer, toggle)
 
 ---
 
-### 📜 `license.html` Upgrades
+### 📄 `index.html` Changes
 
-- All outbound links now include `target="_blank"` and `rel="noopener"`
-- Styled locally with scoped `<style>` for layout control
-- Fully reflects Markdown content from `LICENSE.md` (v2.1)
+- Info icon (`#quickInfoIcon`) added with `aria-describedby` + `tabindex`
+- `.quick-info-callout` structure inserted
+- Updated favicon tag
 
 ---
 
-### 🗒️ Documentation + Legal
+### 📜 `license.html` + `LICENSE.md`
 
-- `README.md` updated to reference License v2.1 (was v2.0)
-- `LICENSE.md` confirms full terms under GPT-OPS v2.1 including Attribution, Commercial Use, and Moral Clauses
+- Markdown license now fully reflected in `license.html`
+- External links include `rel="noopener"` and `target="_blank"`
+- Improved semantic styling (headers, quotes, spacing)
+
+---
+
+### 🗒️ Documentation
+
+- `README.md` updated to reference License v2.1
+- `CHANGELOG.md` verified
+- Descriptions polished and aligned with branding
 
 ---
 
 ### ✅ Audit Outcome
 
-> All changes verified against source files.  
-> No discrepancies or missing features found.  
-> Attribution is now silently enforced across both button and manual copy flows.  
+> All features tested and verified. Clipboard functionality works across modern and legacy browsers.  
+> Accessibility and ethical attribution confirmed.
 
 ---
 
-🔖 **Tag Recommendation:** `v1.3.5`  
-📝 **Commit Message:**  
+### 🏷️ Git Tag
+
 ```bash
-Silent Attribution + Info Pop — hardened clipboard integration and animated callout
+git tag -a v1.3.5 -m "Silent Attribution + Info Pop — hardened clipboard integration and animated callout"
+git push origin v1.3.5
