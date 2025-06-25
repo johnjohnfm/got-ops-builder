@@ -37,7 +37,7 @@ h1 {
   color: #666666;
   margin-bottom: 24px;
   line-height: 1.5;
-  position: relative; /* For quick info callout positioning */
+  position: relative;
 }
 
 .mode-switch {
@@ -68,6 +68,67 @@ h1 {
 .switch.active-full #fullLabel {
   background-color: #fed001;
   color: #000000;
+}
+
+/* ✅ NEW: GPT Assist Toggle (OPS+) */
+.gpt-toggle-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 8px 0 24px 0;
+}
+
+.gpt-switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
+}
+
+.gpt-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.gpt-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000;
+  transition: 0.3s;
+  border-radius: 22px;
+}
+
+.gpt-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #fff;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+.gpt-switch input:checked + .gpt-slider {
+  background-color: #fed001;
+}
+
+.gpt-switch input:checked + .gpt-slider:before {
+  transform: translateX(18px);
+}
+
+.gpt-toggle-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  margin-top: 6px;
+  text-align: center;
 }
 
 .form-section {
@@ -117,7 +178,8 @@ input {
   color: #000000;
 }
 
-.copy-status, .generate-status {
+.copy-status,
+.generate-status {
   font-size: 12px;
   color: #fed001;
   margin-top: 8px;
@@ -153,7 +215,7 @@ footer p a[href="./license.html"] {
   color: #333333;
 }
 
-/* Quick Info Icon (PNG) and Callout Styling */
+/* Quick Info Icon and Callout */
 #quickInfoIcon {
   display: inline-block;
   width: 13px;
@@ -228,67 +290,4 @@ footer p a[href="./license.html"] {
   line-height: 1.4;
   color: #555;
   margin: 0;
-}
-
-/* ✅ GPT Assist Toggle — OPS+ */
-.gpt-toggle-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  margin-top: -4px;
-  margin-bottom: 24px;
-}
-
-.gpt-toggle-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #333;
-  line-height: 1;
-  margin-top: 2px;
-}
-
-.gpt-switch {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 22px;
-}
-
-.gpt-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.gpt-slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #000;
-  transition: 0.3s;
-  border-radius: 22px;
-}
-
-.gpt-slider:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 3px;
-  bottom: 3px;
-  background-color: #fff;
-  transition: 0.3s;
-  border-radius: 50%;
-}
-
-.gpt-switch input:checked + .gpt-slider {
-  background-color: #fed001;
-}
-
-.gpt-switch input:checked + .gpt-slider:before {
-  transform: translateX(18px);
 }
