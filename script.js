@@ -1,6 +1,8 @@
+
 // ✖️ GPT OPS Prompt Builder
-// Version: v1.4.2
-const VERSION = "v1.4.2";
+// Version: v1.5.0
+
+const VERSION = "v1.5.0";
 
 const toggle = document.getElementById("toggle");
 const quickForm = document.getElementById("quickForm");
@@ -8,11 +10,9 @@ const fullForm = document.getElementById("fullForm");
 const generateStatus = document.getElementById("generateStatus");
 const copyStatus = document.getElementById("copyStatus");
 const output = document.getElementById("output");
-const gptToggle = document.getElementById("enableGPTAssist");
+const opsPlusToggle = document.getElementById("enableGPTAssist");
 
-const hiddenAttribution = `\n\nGenerated using GPT-OPS v2.1\n© 2024 JOHNJOHNFM — Instruction Architecture by JOHN E. REYNOLDS\nLicense: https://gpt-ops-builder.vercel.app/license.html\nAttribution Required + Ethical Use Only`;
-
-// Toggle quick/full
+// ✖️ Form toggle logic
 toggle.addEventListener("click", () => {
   const isQuick = toggle.classList.contains("active-quick");
   toggle.classList.toggle("active-quick", !isQuick);
@@ -24,10 +24,12 @@ toggle.addEventListener("click", () => {
   generateStatus.innerText = "";
 });
 
-// Generate
+// ✖️ Generate button logic
 document.getElementById("generateButton").addEventListener("click", async () => {
   const isQuick = toggle.classList.contains("active-quick");
-  let txt = "";
+  const useAI = opsPlusToggle.checked;
+  let instruction = "";
+
   generateStatus.innerText = "";
   copyStatus.innerText = "";
 
@@ -39,11 +41,11 @@ document.getElementById("generateButton").addEventListener("click", async () => 
       generateStatus.innerText = "Please fill required fields.";
       return;
     }
-    txt = `Create full GPT Project Instructions using the GPT OPS method for a ${disc} assistant called ${name}, whose job is to ${purpose}. Include memory, tone, tools, and examples.`;
+    instruction = `Create full GPT Project Instructions using the GPT OPS method for a ${disc} assistant called ${name}, whose job is to ${purpose}. Include memory, tone, tools, and examples.`;
   } else {
     const get = id => document.getElementById(id).value.trim();
-    const fields = ["projectName","purpose","users","disciplines","outputs","tone","values","memory","mustHave","shouldHave","couldHave","wontHave"];
-    const labels = ["X PROJECT NAME","X PURPOSE","X PRIMARY USERS","X CORE DISCIPLINE(S)","X PREFERRED OUTPUTS","X BRAND OR TONE","X VALUES OR PRIORITIES","X KEY MEMORY ELEMENTS","X MUST‑HAVE BEHAVIORS","X SHOULD‑HAVE FEATURES","X COULD‑HAVE EXTRAS","X WON'T‑HAVES"];
+    const fields = ["projectName", "purpose", "users", "disciplines", "outputs", "tone", "values", "memory", "mustHave", "shouldHave", "couldHave", "wontHave"];
+    const labels = ["X PROJECT NAME", "X PURPOSE", "X PRIMARY USERS", "X CORE DISCIPLINE(S)", "X PREFERRED OUTPUTS", "X BRAND OR TONE", "X VALUES OR PRIORITIES", "X KEY MEMORY ELEMENTS", "X MUST‑HAVE BEHAVIORS", "X SHOULD‑HAVE FEATURES", "X COULD‑HAVE EXTRAS", "X WON'T‑HAVES"];
     let parts = [];
     for (let i = 0; i < fields.length; i++) {
       const val = get(fields[i]);
@@ -54,61 +56,61 @@ document.getElementById("generateButton").addEventListener("click", async () => 
       if (val) parts.push(`${labels[i]}: ${val}`);
     }
     parts.unshift("✖ GPT OPS FULL INSTRUCTIONS");
-    txt = parts.join("\n");
+    instruction = parts.join("\n");
     if (parts.length > 1) {
-      txt += "\n\nAlso include 3-5 example input/output pairs showing how this GPT should respond. Tone should be professional and clear. You may include comments.";
+      instruction += "\n\nAlso include 3-5 example input/output pairs showing how this GPT should respond. Tone should be professional and clear. You may include comments.";
     }
   }
 
-  output.value = txt;
+  try {
+    generateStatus.innerText = useAI ? "Enhancing with GPT..." : "Validating...";
+    const response = await fetch("https://got-ops-api.onrender.com/api/validate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        instruction,
+        failure_type: "underspecified",
+        context_tags: ["structure", "clarity"],
+        desired_fix_type: "rephrase",
+        language_register: "formal",
+        target_role: "system",
+        mode: isQuick ? "quick" : "full",
+        useAI
+      }),
+    });
 
-  if (gptToggle && gptToggle.checked) {
-    generateStatus.innerText = "Enhancing with GPT...";
-    try {
-      const res = await fetch("https://got-ops-api.onrender.com/api/validate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          instruction: txt,
-          failure_type: "soft_flag",
-          context_tags: ["ambiguity"],
-          desired_fix_type: "clarify",
-          language_register: "professional",
-          target_role: "AI assistant",
-          mode: "Strict",
-          useAI: true
-        })
-      });
+    const result = await response.json();
 
-      const data = await res.json();
-      if (data?.enhanced_instruction) {
-        output.value = data.enhanced_instruction;
-        generateStatus.innerText = "GPT Enhancement Complete.";
-      } else {
-        generateStatus.innerText = "GPT returned no enhancement.";
-      }
-    } catch (err) {
-      console.error("GPT Assist failed:", err);
-      generateStatus.innerText = "GPT Assist failed.";
+    if (result?.validator?.enhanced_instruction) {
+      output.value = result.validator.enhanced_instruction;
+      generateStatus.innerText = "Validation complete.";
+    } else if (result?.validator?.original_instruction) {
+      output.value = result.validator.original_instruction;
+      generateStatus.innerText = "Validation complete (no enhancement).";
+    } else {
+      generateStatus.innerText = "Validation failed. No output returned.";
     }
+  } catch (error) {
+    console.error("Validation error:", error);
+    generateStatus.innerText = "Validation failed.";
   }
 });
 
-// Copy
+// ✖️ Copy logic
 document.getElementById("copyButton").addEventListener("click", () => {
   const text = output.value.trim();
   generateStatus.innerText = "";
   copyStatus.innerText = "";
   if (text) {
-    navigator.clipboard.writeText(text + hiddenAttribution)
+    navigator.clipboard.writeText(text)
       .then(() => copyStatus.innerText = "Prompt copied!")
-      .catch(() => copyStatus.innerText = "Prompt copied! (Fallback)");
+      .catch(() => copyStatus.innerText = "Prompt copied! (fallback)");
   } else {
     copyStatus.innerText = "Please generate a prompt first.";
   }
 });
 
-// Callout (hover only)
+// ✖️ Quick Info Callout
 document.addEventListener('DOMContentLoaded', () => {
   const quickInfoIcon = document.getElementById('quickInfoIcon');
   const gptOpsInfoCallout = document.getElementById('gptOpsInfoCallout');
@@ -117,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!quickInfoIcon || !gptOpsInfoCallout) return;
 
   function showCallout() {
-    if (dismissTimeout) clearTimeout(dismissTimeout);
+    clearTimeout(dismissTimeout);
     gptOpsInfoCallout.classList.remove('hidden');
     void gptOpsInfoCallout.offsetWidth;
     gptOpsInfoCallout.classList.add('active');
@@ -134,4 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
   quickInfoIcon.addEventListener('mouseleave', hideCallout);
   gptOpsInfoCallout.addEventListener('mouseenter', () => clearTimeout(dismissTimeout));
   gptOpsInfoCallout.addEventListener('mouseleave', hideCallout);
+  quickInfoIcon.addEventListener('focus', showCallout);
+  quickInfoIcon.addEventListener('blur', hideCallout);
 });
