@@ -72,15 +72,14 @@
     <input id="wontHave" type="text" placeholder="e.g. Tarot, dream decoding, manifesting nonsense" />
   </div>
 
-  <div id="buttonGroup" style="display: flex; align-items: center; justify-content: space-between;">
+  <div id="buttonGroup" class="button-group">
     <button class="submit-button" id="generateButton">Generate</button>
-    <div class="gpt-toggle-wrapper">
-      <label class="gpt-toggle">
-        <input type="checkbox" id="enableGPTAssist" />
-        <span class="gpt-slider"></span>
-      </label>
-      <span class="gpt-toggle-label">OPS+</span>
-    </div>
+
+    <label class="opsplus-toggle">
+      <input type="checkbox" id="enableGPTAssist" />
+      <span class="opsplus-slider"></span>
+      <span class="opsplus-label">OPS+</span>
+    </label>
   </div>
 
   <div class="generate-status" id="generateStatus"></div>
