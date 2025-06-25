@@ -1,5 +1,6 @@
 // ✖️ GPT OPS Prompt Builder
 // Version: v1.4.2
+// https://gpt-ops-builder.vercel.app
 
 const VERSION = "v1.4.2";
 
@@ -9,11 +10,10 @@ const fullForm = document.getElementById("fullForm");
 const generateStatus = document.getElementById("generateStatus");
 const copyStatus = document.getElementById("copyStatus");
 const output = document.getElementById("output");
-const gptToggle = document.getElementById("enableGPTAssist");
 
 const hiddenAttribution = `\n\nGenerated using GPT-OPS v2.1\n© 2024 JOHNJOHNFM — Instruction Architecture by JOHN E. REYNOLDS\nLicense: https://gpt-ops-builder.vercel.app/license.html\nAttribution Required + Ethical Use Only`;
 
-// Toggle between QUICK and FULL modes
+// ✖️ FORM MODE TOGGLE (QUICK / FULL)
 toggle.addEventListener("click", () => {
   const isQuick = toggle.classList.contains("active-quick");
   toggle.classList.toggle("active-quick", !isQuick);
@@ -25,7 +25,17 @@ toggle.addEventListener("click", () => {
   generateStatus.innerText = "";
 });
 
-// Generate prompt
+// ✖️ OPS+ Toggle Logic (Pill Switch)
+const gptToggle = document.getElementById("gptToggle");
+gptToggle.addEventListener("click", () => {
+  gptToggle.classList.toggle("active");
+  gptToggle.setAttribute("aria-checked", gptToggle.classList.contains("active"));
+});
+function isGptEnhanceEnabled() {
+  return gptToggle.classList.contains("active");
+}
+
+// ✖️ Generate Prompt
 document.getElementById("generateButton").addEventListener("click", async () => {
   const isQuick = toggle.classList.contains("active-quick");
   let txt = "";
@@ -43,9 +53,17 @@ document.getElementById("generateButton").addEventListener("click", async () => 
     txt = `Create full GPT Project Instructions using the GPT OPS method for a ${disc} assistant called ${name}, whose job is to ${purpose}. Include memory, tone, tools, and examples.`;
   } else {
     const get = id => document.getElementById(id).value.trim();
-    const fields = ["projectName","purpose","users","disciplines","outputs","tone","values","memory","mustHave","shouldHave","couldHave","wontHave"];
-    const labels = ["X PROJECT NAME","X PURPOSE","X PRIMARY USERS","X CORE DISCIPLINE(S)","X PREFERRED OUTPUTS","X BRAND OR TONE","X VALUES OR PRIORITIES","X KEY MEMORY ELEMENTS","X MUST‑HAVE BEHAVIORS","X SHOULD‑HAVE FEATURES","X COULD‑HAVE EXTRAS","X WON'T‑HAVES"];
+    const fields = [
+      "projectName", "purpose", "users", "disciplines", "outputs", "tone",
+      "values", "memory", "mustHave", "shouldHave", "couldHave", "wontHave"
+    ];
+    const labels = [
+      "X PROJECT NAME", "X PURPOSE", "X PRIMARY USERS", "X CORE DISCIPLINE(S)",
+      "X PREFERRED OUTPUTS", "X BRAND OR TONE", "X VALUES OR PRIORITIES", "X KEY MEMORY ELEMENTS",
+      "X MUST‑HAVE BEHAVIORS", "X SHOULD‑HAVE FEATURES", "X COULD‑HAVE EXTRAS", "X WON'T‑HAVES"
+    ];
     let parts = [];
+
     for (let i = 0; i < fields.length; i++) {
       const val = get(fields[i]);
       if (i < 4 && !val) {
@@ -54,8 +72,10 @@ document.getElementById("generateButton").addEventListener("click", async () => 
       }
       if (val) parts.push(`${labels[i]}: ${val}`);
     }
+
     parts.unshift("✖ GPT OPS FULL INSTRUCTIONS");
     txt = parts.join("\n");
+
     if (parts.length > 1) {
       txt += "\n\nAlso include 3–5 example input/output pairs showing how this GPT should respond. Tone should be professional and clear. You may include comments.";
     }
@@ -63,7 +83,8 @@ document.getElementById("generateButton").addEventListener("click", async () => 
 
   output.value = txt;
 
-  if (gptToggle?.checked) {
+  // ✖️ GPT Assist enhancement
+  if (isGptEnhanceEnabled()) {
     generateStatus.innerText = "Enhancing with GPT...";
     try {
       const res = await fetch("https://got-ops-api.onrender.com/api/validate", {
@@ -80,21 +101,22 @@ document.getElementById("generateButton").addEventListener("click", async () => 
           useAI: true
         })
       });
+
       const result = await res.json();
-      if (result?.enhanced_instruction) {
+      if (result.enhanced_instruction) {
         output.value = result.enhanced_instruction;
         generateStatus.innerText = "GPT Enhancement Complete.";
       } else {
         generateStatus.innerText = "GPT returned no enhancement.";
       }
     } catch (err) {
-      console.error("GPT Assist error:", err);
+      console.error("GPT Assist failed:", err);
       generateStatus.innerText = "GPT Assist failed.";
     }
   }
 });
 
-// Copy prompt
+// ✖️ Copy prompt + attribution
 document.getElementById("copyButton").addEventListener("click", () => {
   const text = output.value.trim();
   generateStatus.innerText = "";
@@ -110,55 +132,61 @@ document.getElementById("copyButton").addEventListener("click", () => {
   }
 });
 
-// Copy to clipboard function
+// ✖️ Clipboard utility
 function copyToClipboard(text) {
   return new Promise((resolve, reject) => {
     const finalText = text + hiddenAttribution;
-    if (navigator.clipboard?.writeText) {
-      navigator.clipboard.writeText(finalText).then(resolve).catch(reject);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(finalText).then(resolve).catch(err => {
+        fallbackCopy(finalText) ? resolve() : reject(err);
+      });
     } else {
-      const temp = document.createElement("textarea");
-      temp.value = finalText;
-      document.body.appendChild(temp);
-      temp.select();
-      try {
-        document.execCommand("copy");
-        resolve();
-      } catch (e) {
-        reject(e);
-      } finally {
-        document.body.removeChild(temp);
-      }
+      fallbackCopy(finalText) ? resolve() : reject("Clipboard not available");
     }
   });
 }
 
-// ✅ Quick Info Callout
-document.addEventListener('DOMContentLoaded', () => {
-  const quickInfoIcon = document.getElementById('quickInfoIcon');
-  const gptOpsInfoCallout = document.getElementById('gptOpsInfoCallout');
+function fallbackCopy(finalText) {
+  const temp = document.createElement("textarea");
+  temp.value = finalText;
+  document.body.appendChild(temp);
+  temp.select();
+  const success = document.execCommand("copy");
+  document.body.removeChild(temp);
+  return success;
+}
+
+// ✖️ Quick Info Callout (Hover Only)
+document.addEventListener("DOMContentLoaded", () => {
+  const quickInfoIcon = document.getElementById("quickInfoIcon");
+  const gptOpsInfoCallout = document.getElementById("gptOpsInfoCallout");
   let dismissTimeout;
 
-  if (!quickInfoIcon || !gptOpsInfoCallout) return;
+  if (!quickInfoIcon || !gptOpsInfoCallout) {
+    console.error("Quick Info elements not found");
+    return;
+  }
 
   function showCallout() {
-    clearTimeout(dismissTimeout);
-    gptOpsInfoCallout.classList.remove('hidden');
+    if (dismissTimeout) clearTimeout(dismissTimeout);
+    gptOpsInfoCallout.classList.remove("hidden");
     void gptOpsInfoCallout.offsetWidth;
-    gptOpsInfoCallout.classList.add('active');
+    gptOpsInfoCallout.classList.add("active");
   }
 
   function hideCallout() {
-    gptOpsInfoCallout.classList.remove('active');
+    gptOpsInfoCallout.classList.remove("active");
     dismissTimeout = setTimeout(() => {
-      gptOpsInfoCallout.classList.add('hidden');
+      gptOpsInfoCallout.classList.add("hidden");
     }, 300);
   }
 
-  quickInfoIcon.addEventListener('mouseenter', showCallout);
-  quickInfoIcon.addEventListener('mouseleave', hideCallout);
-  gptOpsInfoCallout.addEventListener('mouseenter', () => clearTimeout(dismissTimeout));
-  gptOpsInfoCallout.addEventListener('mouseleave', hideCallout);
-  quickInfoIcon.addEventListener('focus', showCallout);
-  quickInfoIcon.addEventListener('blur', hideCallout);
+  quickInfoIcon.addEventListener("mouseenter", showCallout);
+  quickInfoIcon.addEventListener("mouseleave", hideCallout);
+  gptOpsInfoCallout.addEventListener("mouseenter", () => {
+    if (dismissTimeout) clearTimeout(dismissTimeout);
+  });
+  gptOpsInfoCallout.addEventListener("mouseleave", hideCallout);
+  quickInfoIcon.addEventListener("focus", showCallout);
+  quickInfoIcon.addEventListener("blur", hideCallout);
 });
