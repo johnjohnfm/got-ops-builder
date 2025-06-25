@@ -1,6 +1,5 @@
 // ✖️ GPT OPS Prompt Builder
 // Version: v1.4.2
-// https://gpt-ops-builder.vercel.app
 
 const VERSION = "v1.4.2";
 
@@ -15,7 +14,6 @@ const gptToggle = document.getElementById("enableGPTAssist");
 
 const hiddenAttribution = `\n\nGenerated using GPT-OPS v2.1\n© 2024 JOHNJOHNFM — Instruction Architecture by JOHN E. REYNOLDS\nLicense: https://gpt-ops-builder.vercel.app/license.html\nAttribution Required + Ethical Use Only`;
 
-// 🧠 Form toggle logic
 toggle.addEventListener("click", () => {
   const isQuick = toggle.classList.contains("active-quick");
   toggle.classList.toggle("active-quick", !isQuick);
@@ -25,14 +23,23 @@ toggle.addEventListener("click", () => {
   output.value = "";
   copyStatus.innerText = "";
   generateStatus.innerText = "";
+
+  const existingLogicBlock = document.querySelector(".logic-results");
+  if (existingLogicBlock) existingLogicBlock.remove();
 });
 
-// 🛠 Generate button logic
 document.getElementById("generateButton").addEventListener("click", async () => {
   const isQuick = toggle.classList.contains("active-quick");
   let txt = "";
   generateStatus.innerText = "";
   copyStatus.innerText = "";
+
+  const removeOldLogic = () => {
+    const oldBlock = document.querySelector(".logic-results");
+    if (oldBlock) oldBlock.remove();
+  };
+
+  removeOldLogic();
 
   if (isQuick) {
     const name = document.getElementById("q_projectName").value.trim();
@@ -65,18 +72,46 @@ document.getElementById("generateButton").addEventListener("click", async () => 
 
   output.value = txt;
 
-  // ⚡ GPT Assist enhancement
   if (gptToggle?.checked) {
     generateStatus.innerText = "Enhancing with GPT...";
     try {
-      const result = await callGPTAssist(txt);
-      console.log("GPT Assist result:", result); // Debug
-      if (result?.enhanced_instruction) {
+      const response = await fetch("https://got-ops-api.onrender.com/api/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          instruction: txt,
+          failure_type: "soft_flag",
+          context_tags: ["ambiguity"],
+          desired_fix_type: "clarify",
+          language_register: "professional",
+          target_role: "AI assistant",
+          mode: "Strict",
+          useAI: true
+        })
+      });
+
+      const result = await response.json();
+
+      if (result.enhanced_instruction) {
         output.value = result.enhanced_instruction;
         generateStatus.innerText = "GPT Enhancement Complete.";
       } else {
         generateStatus.innerText = "GPT returned no enhancement.";
       }
+
+      if (result.validator) {
+        const logicBlock = document.createElement("div");
+        logicBlock.className = "logic-results";
+        logicBlock.innerHTML = `
+          <h4>Logic+ Analysis</h4>
+          <p><strong>Fallacies:</strong> ${result.validator.logical_fallacies?.join(", ") || "None"}</p>
+          <p><strong>Contradictions:</strong> ${result.validator.contradictions?.join(", ") || "None"}</p>
+          <p><strong>Validity Score:</strong> ${result.validator.validity_score ?? "N/A"}</p>
+          <p><strong>Explanation:</strong> ${result.validator.explanation || "N/A"}</p>
+        `;
+        output.parentNode.insertBefore(logicBlock, output.nextSibling);
+      }
+
     } catch (err) {
       console.error("GPT Assist error:", err);
       generateStatus.innerText = "GPT Assist failed.";
@@ -84,11 +119,11 @@ document.getElementById("generateButton").addEventListener("click", async () => 
   }
 });
 
-// 📋 Copy button logic
 document.getElementById("copyButton").addEventListener("click", () => {
   const text = output.value.trim();
   generateStatus.innerText = "";
   copyStatus.innerText = "";
+
   if (text) {
     copyToClipboard(text).then(() => {
       copyStatus.innerText = "Prompt copied!";
@@ -100,93 +135,44 @@ document.getElementById("copyButton").addEventListener("click", () => {
   }
 });
 
-// 📘 GPT OPS Callout Hover Only
-document.addEventListener('DOMContentLoaded', () => {
-  const quickInfoIcon = document.getElementById('quickInfoIcon');
-  const gptOpsInfoCallout = document.getElementById('gptOpsInfoCallout');
-  let dismissTimeout;
-
-  if (!quickInfoIcon || !gptOpsInfoCallout) return;
-
-  function showCallout() {
-    if (dismissTimeout) clearTimeout(dismissTimeout);
-    gptOpsInfoCallout.classList.remove('hidden');
-    void gptOpsInfoCallout.offsetWidth;
-    gptOpsInfoCallout.classList.add('active');
-  }
-
-  function hideCallout() {
-    gptOpsInfoCallout.classList.remove('active');
-    dismissTimeout = setTimeout(() => {
-      gptOpsInfoCallout.classList.add('hidden');
-    }, 300);
-  }
-
-  quickInfoIcon.addEventListener('mouseenter', showCallout);
-  quickInfoIcon.addEventListener('mouseleave', hideCallout);
-  gptOpsInfoCallout.addEventListener('mouseenter', () => {
-    if (dismissTimeout) clearTimeout(dismissTimeout);
-  });
-  gptOpsInfoCallout.addEventListener('mouseleave', hideCallout);
-  quickInfoIcon.addEventListener('focus', showCallout);
-  quickInfoIcon.addEventListener('blur', hideCallout);
+output.addEventListener('copy', event => {
+  const selection = window.getSelection().toString() || output.value;
+  event.preventDefault();
+  event.clipboardData.setData('text/plain', selection + hiddenAttribution);
+  copyStatus.innerText = 'Prompt copied!';
 });
 
-// 🧾 Copy helper
 function copyToClipboard(text) {
   return new Promise((resolve, reject) => {
     const finalText = text + hiddenAttribution;
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(finalText).then(resolve).catch(err => {
-        fallbackCopy(finalText) ? resolve() : reject(err);
+        const temp = document.createElement('textarea');
+        temp.value = finalText;
+        document.body.appendChild(temp);
+        temp.select();
+        try {
+          document.execCommand('copy');
+          resolve();
+        } catch (e) {
+          reject(e);
+        } finally {
+          document.body.removeChild(temp);
+        }
       });
     } else {
-      fallbackCopy(finalText) ? resolve() : reject("Clipboard not supported");
-    }
-  });
-
-  function fallbackCopy(text) {
-    try {
-      const temp = document.createElement("textarea");
-      temp.value = text;
+      const temp = document.createElement('textarea');
+      temp.value = finalText;
       document.body.appendChild(temp);
       temp.select();
-      const success = document.execCommand("copy");
-      document.body.removeChild(temp);
-      return success;
-    } catch (e) {
-      return false;
+      try {
+        document.execCommand('copy');
+        resolve();
+      } catch (e) {
+        reject(e);
+      } finally {
+        document.body.removeChild(temp);
+      }
     }
-  }
-}
-
-// 🌐 GPT Assist API
-async function callGPTAssist(instructionText) {
-  const endpoint = "https://got-ops-api.onrender.com/api/validate";
-  const payload = {
-    instruction: instructionText,
-    failure_type: "soft_flag",
-    mode: "Strict",
-    context_tags: ["ambiguity"],
-    desired_fix_type: "clarify",
-    language_register: "professional",
-    target_role: "AI assistant",
-    useAI: true
-  };
-
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
   });
-
-  if (!response.ok) {
-    throw new Error(`GPT Assist HTTP error: ${response.status}`);
-  }
-
-  return await response.json();
 }
-
-// © 2025 John E. Reynolds. All rights reserved.
-// Licensed under GPT-OPS License v2.1 — https://gpt-ops-builder.vercel.app/license.html
-// Authored as part of the GPT-OPS Instruction Architecture by JOHNJOHNFM.
