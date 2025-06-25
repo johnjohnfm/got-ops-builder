@@ -6,11 +6,13 @@ body {
   margin: 0 auto;
   padding: 32px 16px;
 }
+
 .marquee-wrapper {
   max-width: 350px;
   overflow: hidden;
   margin: 0 auto 24px;
 }
+
 .marquee-text {
   display: inline-block;
   white-space: nowrap;
@@ -19,14 +21,17 @@ body {
   font-weight: bold;
   font-size: 14px;
 }
+
 @keyframes scroll-left {
   0% { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
 }
+
 h1 {
   text-align: center;
   margin-bottom: 16px;
 }
+
 .instructions {
   font-size: 13px;
   color: #666666;
@@ -34,11 +39,13 @@ h1 {
   line-height: 1.5;
   position: relative; /* CRITICAL FIX: Positioning context for callout */
 }
+
 .mode-switch {
   display: flex;
   justify-content: center;
   margin-bottom: 24px;
 }
+
 .switch {
   background-color: #000000;
   border-radius: 20px;
@@ -48,6 +55,7 @@ h1 {
   cursor: pointer;
   user-select: none;
 }
+
 .switch span {
   padding: 6px 16px;
   font-size: 14px;
@@ -55,17 +63,21 @@ h1 {
   color: #ffffff;
   border-radius: 20px;
 }
+
 .switch.active-quick #quickLabel,
 .switch.active-full #fullLabel {
   background-color: #fed001;
   color: #000000;
 }
+
 .form-section {
   margin-bottom: 16px;
 }
+
 .hidden {
   display: none;
 }
+
 label {
   font-size: 14px;
   font-weight: bold;
@@ -73,6 +85,7 @@ label {
   margin-bottom: 8px;
   display: block;
 }
+
 input {
   width: 100%;
   padding: 12px;
@@ -84,6 +97,7 @@ input {
   margin-bottom: 16px;
   box-sizing: border-box;
 }
+
 .submit-button {
   font-size: 16px;
   font-weight: 500;
@@ -97,10 +111,12 @@ input {
   margin-right: 8px;
   margin-bottom: 16px;
 }
+
 .submit-button:hover {
   background-color: #fed001;
   color: #000000;
 }
+
 .copy-status, .generate-status {
   font-size: 12px;
   color: #fed001;
@@ -108,6 +124,7 @@ input {
   margin-bottom: 8px;
   font-style: italic;
 }
+
 .output {
   height: 240px;
   width: 100%;
@@ -119,100 +136,113 @@ input {
   box-sizing: border-box;
   resize: none;
 }
+
 footer {
   font-size: 12px;
   text-align: center;
   line-height: 1.5;
   margin-top: 32px;
 }
+
 footer a {
   color: #fed001;
   text-decoration: none;
 }
+
 footer p a[href="./license.html"] {
   color: #333333;
 }
 
 /* Quick Info Icon (PNG) and Callout Styling */
 #quickInfoIcon {
-    /* Styles for the PNG icon */
-    display: inline-block; /* Allows it to sit inline with text */
-    width: 13px; /* Set to scaled PNG size */
-    height: 13px; /* Set to scaled PNG size */
-    cursor: pointer;
-    vertical-align: middle; /* Aligns with text baseline */
-    margin-left: 8px; /* Space from preceding text */
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  cursor: pointer;
+  vertical-align: middle;
+  margin-left: 8px;
 }
 
 .quick-info-callout {
-    position: absolute;
-    z-index: 1000;
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    padding: 16px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    opacity: 0;
-    transform: translateX(-50%) translateY(-10px); /* Initial animation state (moves UP from final pos) */
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-    min-width: 280px;
-    max-width: 320px;
-    pointer-events: none;
-    top: calc(100% + 15px); /* Position 15px BELOW the icon's line in instructions */
-    left: 50%; /* Center horizontally relative to .instructions parent */
+  position: absolute;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 0;
+  transform: translateX(-50%) translateY(-10px);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  min-width: 280px;
+  max-width: 320px;
+  pointer-events: none;
+  top: calc(100% + 15px);
+  left: 50%;
 }
 
 .quick-info-callout.hidden {
-    display: none;
+  display: none;
 }
 
 .quick-info-callout.active {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0); /* Final state for animation */
-    pointer-events: auto;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
 }
 
 .quick-info-arrow {
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    /* Arrow points UP for a BELOW-icon callout */
-    border-width: 0 8px 8px 8px; /* Arrow base 16px, points up */
-    border-color: transparent transparent rgba(255, 255, 255, 0.95) transparent; /* Matches callout background */
-    bottom: 100%; /* Position at the top edge of the callout */
-    left: 50%;
-    transform: translateX(-50%);
-    filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, 0.1)); /* Shadow casts upwards */
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 8px 8px 8px;
+  border-color: transparent transparent rgba(255, 255, 255, 0.95) transparent;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, 0.1));
 }
 
 .quick-info-content-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
 }
 
 .quick-info-title {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #333;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 .quick-info-description {
-    font-size: 13px;
-    line-height: 1.4;
-    color: #555;
-    margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #555;
+  margin: 0;
 }
 
-<!-- © 2025 John E. Reynolds. All rights reserved.
-     Licensed under GPT-OPS License v2.1 — https://gpt-ops-builder.vercel.app/license.html
-     Authored as part of the GPT-OPS Instruction Architecture by JOHNJOHNFM. -->
+/* ✅ GPT Assist Toggle Styling */
+.controls-section {
+  display: flex;
+  align-items: center;
+  margin: 16px 0;
+  font-size: 13px;
+  gap: 8px;
+  color: #333333;
+}
+
+.controls-section input[type="checkbox"] {
+  transform: scale(1.1);
+  accent-color: #fed001;
+  cursor: pointer;
+}
