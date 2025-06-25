@@ -292,3 +292,30 @@ footer p a[href="./license.html"] {
   color: #555;
   margin: 0;
 }
+
+/* ✖️ Existing styles preserved above this line */
+
+/* ✅ Logic+ Output Display */
+.logic-results {
+  background: #fefefe;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 13px;
+  margin-top: 16px;
+  line-height: 1.5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.logic-results h4 {
+  margin-top: 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #222222;
+}
+
+.logic-results p {
+  margin: 6px 0;
+  color: #444444;
+}
+
