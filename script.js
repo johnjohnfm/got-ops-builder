@@ -11,18 +11,18 @@ const generateStatus = document.getElementById("generateStatus");
 const copyStatus = document.getElementById("copyStatus");
 const output = document.getElementById("output");
 
-// ✅ PATCH: GPT Assist toggle element
+// ✅ PATCH: Inject GPT Assist toggle if missing
 let gptToggle = document.getElementById("enableGPTAssist");
 if (!gptToggle) {
-  const t = document.createElement("label");
-  t.innerHTML = '<input type="checkbox" id="enableGPTAssist"> Enhance with GPT';
-  document.getElementById("controlsSection")?.appendChild(t);
+  const label = document.createElement("label");
+  label.innerHTML = '<input type="checkbox" id="enableGPTAssist"> Enhance with GPT';
+  document.getElementById("controlsSection")?.appendChild(label);
   gptToggle = document.getElementById("enableGPTAssist");
 }
 
 const hiddenAttribution = `\n\nGenerated using GPT-OPS v2.1\n© 2024 JOHNJOHNFM — Instruction Architecture by JOHN E. REYNOLDS\nLicense: https://gpt-ops-builder.vercel.app/license.html\nAttribution Required + Ethical Use Only`;
 
-// Form toggle logic
+// Toggle between Quick and Full form
 toggle.addEventListener("click", () => {
   const isQuick = toggle.classList.contains("active-quick");
   toggle.classList.toggle("active-quick", !isQuick);
@@ -34,12 +34,12 @@ toggle.addEventListener("click", () => {
   generateStatus.innerText = "";
 });
 
-// ✅ PATCH: Enhanced generate logic
+// ✅ PATCH: Generate prompt, then enhance with GPT if requested
 document.getElementById("generateButton").addEventListener("click", async () => {
   const isQuick = toggle.classList.contains("active-quick");
-  let txt = "";
   generateStatus.innerText = "";
   copyStatus.innerText = "";
+  let txt = "";
 
   if (isQuick) {
     const name = document.getElementById("q_projectName").value.trim();
@@ -53,8 +53,13 @@ document.getElementById("generateButton").addEventListener("click", async () => 
   } else {
     const get = id => document.getElementById(id).value.trim();
     const fields = ["projectName","purpose","users","disciplines","outputs","tone","values","memory","mustHave","shouldHave","couldHave","wontHave"];
-    const labels = ["X PROJECT NAME","X PURPOSE","X PRIMARY USERS","X CORE DISCIPLINE(S)","X PREFERRED OUTPUTS","X BRAND OR TONE","X VALUES OR PRIORITIES","X KEY MEMORY ELEMENTS","X MUST‑HAVE BEHAVIORS","X SHOULD‑HAVE FEATURES","X COULD‑HAVE EXTRAS","X WON'T‑HAVES"];
-    let parts = [];
+    const labels = [
+      "X PROJECT NAME","X PURPOSE","X PRIMARY USERS","X CORE DISCIPLINE(S)",
+      "X PREFERRED OUTPUTS","X BRAND OR TONE","X VALUES OR PRIORITIES",
+      "X KEY MEMORY ELEMENTS","X MUST‑HAVE BEHAVIORS","X SHOULD‑HAVE FEATURES",
+      "X COULD‑HAVE EXTRAS","X WON'T‑HAVES"
+    ];
+    const parts = [];
     for (let i = 0; i < fields.length; i++) {
       const val = get(fields[i]);
       if (i < 4 && !val) {
@@ -70,15 +75,14 @@ document.getElementById("generateButton").addEventListener("click", async () => 
     }
   }
 
-  // Set base output
   output.value = txt;
 
-  // ✅ PATCH: GPT Assist call
+  // ✅ GPT Assist Hook
   if (gptToggle.checked) {
     generateStatus.innerText = "Enhancing with GPT...";
     try {
       const result = await callGPTAssist(txt);
-      if (result.enhanced_instruction) {
+      if (result?.enhanced_instruction) {
         output.value = result.enhanced_instruction;
         generateStatus.innerText = "GPT Enhancement Complete.";
       } else {
@@ -96,14 +100,41 @@ document.getElementById("copyButton").addEventListener("click", () => {
   const text = output.value.trim();
   generateStatus.innerText = "";
   copyStatus.innerText = "";
+
   if (text) {
-    copyToClipboard(text).then(() => copyStatus.innerText = "Prompt copied!").catch(() => copyStatus.innerText = "Prompt copied! (fallback)");
+    copyToClipboard(text)
+      .then(() => copyStatus.innerText = "Prompt copied!")
+      .catch(() => copyStatus.innerText = "Prompt copied! (Fallback)");
   } else {
     copyStatus.innerText = "Please generate a prompt first.";
   }
 });
 
-// ...
-// (rest of copy handlers unchanged)
+// Clipboard with attribution patch
+output.addEventListener("copy", event => {
+  const selection = window.getSelection().toString() || output.value;
+  event.preventDefault();
+  event.clipboardData.setData("text/plain", selection + hiddenAttribution);
+  copyStatus.innerText = "Prompt copied!";
+});
 
-// callGPTAssist function remains as-is from previous patch
+// ✅ GPT Assist API Call
+async function callGPTAssist(instructionText) {
+  const response = await fetch("https://got-ops-api.onrender.com/api/validate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      instruction: instructionText,
+      failure_type: "soft_flag",
+      mode: "Strict",
+      context_tags: ["ambiguity"],
+      desired_fix_type: "clarify",
+      language_register: "professional",
+      target_role: "AI assistant",
+      useAI: true
+    })
+  });
+
+  if (!response.ok) throw new Error("API request failed");
+  return await response.json();
+}
