@@ -1,8 +1,6 @@
 // ✖️ GPT OPS Prompt Builder
-// Version: v1.5.0
-// https://gpt-ops-builder.vercel.app
-
-const VERSION = "v1.5.0";
+// Version: v1.4.2
+const VERSION = "v1.4.2";
 
 const toggle = document.getElementById("toggle");
 const quickForm = document.getElementById("quickForm");
@@ -14,7 +12,7 @@ const gptToggle = document.getElementById("enableGPTAssist");
 
 const hiddenAttribution = `\n\nGenerated using GPT-OPS v2.1\n© 2024 JOHNJOHNFM — Instruction Architecture by JOHN E. REYNOLDS\nLicense: https://gpt-ops-builder.vercel.app/license.html\nAttribution Required + Ethical Use Only`;
 
-// Switch logic
+// Toggle quick/full
 toggle.addEventListener("click", () => {
   const isQuick = toggle.classList.contains("active-quick");
   toggle.classList.toggle("active-quick", !isQuick);
@@ -26,6 +24,7 @@ toggle.addEventListener("click", () => {
   generateStatus.innerText = "";
 });
 
+// Generate
 document.getElementById("generateButton").addEventListener("click", async () => {
   const isQuick = toggle.classList.contains("active-quick");
   let txt = "";
@@ -63,56 +62,59 @@ document.getElementById("generateButton").addEventListener("click", async () => 
 
   output.value = txt;
 
-  if (gptToggle.checked) {
+  if (gptToggle && gptToggle.checked) {
     generateStatus.innerText = "Enhancing with GPT...";
     try {
-      const result = await fetch("https://got-ops-api.onrender.com/api/validate", {
+      const res = await fetch("https://got-ops-api.onrender.com/api/validate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           instruction: txt,
-          failure_type: "semantic or logical clarity",
-          context_tags: ["GPT Project", "OPS"],
-          desired_fix_type: "improve and clarify",
+          failure_type: "soft_flag",
+          context_tags: ["ambiguity"],
+          desired_fix_type: "clarify",
           language_register: "professional",
-          target_role: "instruction engine",
-          mode: "logic",
+          target_role: "AI assistant",
+          mode: "Strict",
           useAI: true
         })
       });
 
-      const data = await result.json();
+      const data = await res.json();
       if (data?.enhanced_instruction) {
-        output.value = data.enhanced_instruction + hiddenAttribution;
+        output.value = data.enhanced_instruction;
         generateStatus.innerText = "GPT Enhancement Complete.";
       } else {
         generateStatus.innerText = "GPT returned no enhancement.";
       }
     } catch (err) {
-      console.error("GPT Assist error:", err);
+      console.error("GPT Assist failed:", err);
       generateStatus.innerText = "GPT Assist failed.";
     }
   }
 });
 
+// Copy
 document.getElementById("copyButton").addEventListener("click", () => {
   const text = output.value.trim();
   generateStatus.innerText = "";
   copyStatus.innerText = "";
   if (text) {
-    navigator.clipboard.writeText(text)
+    navigator.clipboard.writeText(text + hiddenAttribution)
       .then(() => copyStatus.innerText = "Prompt copied!")
-      .catch(() => copyStatus.innerText = "Prompt copied! (fallback)");
+      .catch(() => copyStatus.innerText = "Prompt copied! (Fallback)");
   } else {
     copyStatus.innerText = "Please generate a prompt first.";
   }
 });
 
-// Quick Info Callout
+// Callout (hover only)
 document.addEventListener('DOMContentLoaded', () => {
   const quickInfoIcon = document.getElementById('quickInfoIcon');
   const gptOpsInfoCallout = document.getElementById('gptOpsInfoCallout');
   let dismissTimeout;
+
+  if (!quickInfoIcon || !gptOpsInfoCallout) return;
 
   function showCallout() {
     if (dismissTimeout) clearTimeout(dismissTimeout);
@@ -123,13 +125,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function hideCallout() {
     gptOpsInfoCallout.classList.remove('active');
-    dismissTimeout = setTimeout(() => gptOpsInfoCallout.classList.add('hidden'), 300);
+    dismissTimeout = setTimeout(() => {
+      gptOpsInfoCallout.classList.add('hidden');
+    }, 300);
   }
 
   quickInfoIcon.addEventListener('mouseenter', showCallout);
   quickInfoIcon.addEventListener('mouseleave', hideCallout);
   gptOpsInfoCallout.addEventListener('mouseenter', () => clearTimeout(dismissTimeout));
   gptOpsInfoCallout.addEventListener('mouseleave', hideCallout);
-  quickInfoIcon.addEventListener('focus', showCallout);
-  quickInfoIcon.addEventListener('blur', hideCallout);
 });
