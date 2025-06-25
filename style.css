@@ -285,3 +285,60 @@ footer p a[href="./license.html"] {
   color: #555;
   margin: 0;
 }
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.opsplus-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.opsplus-toggle input[type="checkbox"] {
+  display: none;
+}
+
+.opsplus-slider {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  background-color: #000000;
+  border-radius: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.opsplus-slider::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  top: 1px;
+  left: 1px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.opsplus-toggle input:checked + .opsplus-slider {
+  background-color: #fed001;
+}
+
+.opsplus-toggle input:checked + .opsplus-slider::before {
+  transform: translateX(20px);
+  background-color: #000000;
+}
+
+.opsplus-label {
+  color: #333;
+  user-select: none;
+}
+
