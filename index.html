@@ -13,25 +13,22 @@
   </div>
 
   <h1>GPT OPS Prompt Builder</h1>
-
   <div class="instructions">
-    Fill out the fields below to generate GPT OPS-powered Project Instructions for ChatGPT.
-    Toggle between QUICK and FULL modes. Copy your result below.
+    Fill out the fields below to generate GPT OPS-powered Project Instructions for ChatGPT. Toggle between QUICK and FULL modes. Copy your result below.
     <img
-      id="quickInfoIcon"
-      src="./info.circle.fill.png"
-      alt="Information about GPT-Ops Builder"
-      aria-describedby="gptOpsInfoCallout"
-      tabindex="0"
+        id="quickInfoIcon"
+        src="./info.circle.fill.png"
+        alt="Information about GPT-Ops Builder"
+        aria-describedby="gptOpsInfoCallout"
+        tabindex="0"
     />
     <div id="gptOpsInfoCallout" class="quick-info-callout hidden">
       <div class="quick-info-arrow"></div>
       <div class="quick-info-content-wrapper">
         <h3 class="quick-info-title">About GPT-Ops Builder:</h3>
         <p class="quick-info-description">
-          GPT-Ops Builder: Your lightweight, web-based tool for crafting custom, AI-driven GPT Project Instructions.
-          Simply input your operational data, hit 'Generate,' and instantly get precision-engineered GPT Project Instructions
-          to automate tasks, generate code, create documentation, and more.
+          GPT-Ops Builder: Your lightweight, web-based tool for crafting custom, AI-driven GPT Project Instructions. 
+          Simply input your operational data, hit 'Generate,' and instantly get precision-engineered GPT Project Instructions to automate tasks, generate code, create documentation, and more.
         </p>
       </div>
     </div>
@@ -44,16 +41,6 @@
     </div>
   </div>
 
-  <!-- ✅ GPT Assist Toggle (OPS+) -->
-  <div class="gpt-toggle-block">
-    <label class="gpt-switch">
-      <input type="checkbox" id="enableGPTAssist" />
-      <span class="gpt-slider"></span>
-    </label>
-    <div class="gpt-toggle-label">OPS+</div>
-  </div>
-
-  <!-- ✖ QUICK FORM -->
   <div id="quickForm" class="form-section">
     <h3>✖ QUICK PROMPT</h3>
     <label for="q_projectName">Project Name*</label>
@@ -64,7 +51,6 @@
     <input id="q_disciplines" type="text" placeholder="e.g. Ethical reasoning, debate, moral philosophy" />
   </div>
 
-  <!-- ✖ FULL FORM -->
   <div id="fullForm" class="form-section hidden">
     <h3>✖ FULL INSTRUCTIONS</h3>
     <label for="projectName">Project Name*</label>
@@ -93,8 +79,17 @@
     <input id="wontHave" type="text" placeholder="e.g. Tarot, dream decoding, manifesting nonsense" />
   </div>
 
-  <div class="generate-status" id="generateStatus"></div>
-  <button class="submit-button" id="generateButton">Generate</button>
+  <div class="generate-group">
+    <div class="generate-status" id="generateStatus"></div>
+    <div class="generate-row">
+      <button class="submit-button" id="generateButton">Generate</button>
+      <label class="gpt-switch-inline">
+        <input type="checkbox" id="enableGPTAssist" />
+        <span class="gpt-slider-inline"></span>
+      </label>
+      <div class="gpt-toggle-label-inline">OPS+</div>
+    </div>
+  </div>
 
   <textarea id="output" class="output" readonly></textarea>
   <div class="copy-status" id="copyStatus"></div>
@@ -102,9 +97,7 @@
 
   <footer>
     <p>Built with the GPT OPS System by <a href="https://johnjohnfm.uk" target="_blank">JOHNJOHNFM</a></p>
-    <p>This tool is provided “as-is” under the GPT OPS <a href="./license.html" target="_blank">License v2.1</a>.
-      Public and Commercial use requires Attribution or License. Redistribution is prohibited.
-    </p>
+    <p>This tool is provided “as-is” under the GPT OPS <a href="./license.html" target="_blank">License v2.1</a>. Public and Commercial use requires Attribution or License. Redistribution is prohibited.</p>
   </footer>
 
   <script src="script.js"></script>
