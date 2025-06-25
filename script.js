@@ -185,3 +185,29 @@ document.addEventListener('DOMContentLoaded', () => {
   quickInfoIcon.addEventListener('focus', showCallout);
   quickInfoIcon.addEventListener('blur', hideCallout);
 });
+
+// ✅ GPT Assist API Function — FINAL PLACEMENT
+async function callGPTAssist(instructionText) {
+  try {
+    const response = await fetch("https://got-ops-api.onrender.com/api/validate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        instruction: instructionText,
+        failure_type: "soft_flag",
+        mode: "Strict",
+        context_tags: ["ambiguity"],
+        desired_fix_type: "clarify",
+        language_register: "professional",
+        target_role: "AI assistant",
+        useAI: true
+      })
+    });
+
+    const result = await response.json();
+    return result;
+  } catch (err) {
+    console.error("GPT Assist failed:", err);
+    return { enhanced_instruction: null };
+  }
+}
