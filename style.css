@@ -6,13 +6,11 @@ body {
   margin: 0 auto;
   padding: 32px 16px;
 }
-
 .marquee-wrapper {
   max-width: 350px;
   overflow: hidden;
   margin: 0 auto 24px;
 }
-
 .marquee-text {
   display: inline-block;
   white-space: nowrap;
@@ -21,31 +19,26 @@ body {
   font-weight: bold;
   font-size: 14px;
 }
-
 @keyframes scroll-left {
   0% { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
 }
-
 h1 {
   text-align: center;
   margin-bottom: 16px;
 }
-
 .instructions {
   font-size: 13px;
   color: #666666;
   margin-bottom: 24px;
   line-height: 1.5;
-  position: relative; /* CRITICAL FIX: Positioning context for callout */
+  position: relative;
 }
-
 .mode-switch {
   display: flex;
   justify-content: center;
   margin-bottom: 24px;
 }
-
 .switch {
   background-color: #000000;
   border-radius: 20px;
@@ -55,7 +48,6 @@ h1 {
   cursor: pointer;
   user-select: none;
 }
-
 .switch span {
   padding: 6px 16px;
   font-size: 14px;
@@ -63,21 +55,17 @@ h1 {
   color: #ffffff;
   border-radius: 20px;
 }
-
 .switch.active-quick #quickLabel,
 .switch.active-full #fullLabel {
   background-color: #fed001;
   color: #000000;
 }
-
 .form-section {
   margin-bottom: 16px;
 }
-
 .hidden {
   display: none;
 }
-
 label {
   font-size: 14px;
   font-weight: bold;
@@ -85,7 +73,6 @@ label {
   margin-bottom: 8px;
   display: block;
 }
-
 input {
   width: 100%;
   padding: 12px;
@@ -97,7 +84,6 @@ input {
   margin-bottom: 16px;
   box-sizing: border-box;
 }
-
 .submit-button {
   font-size: 16px;
   font-weight: 500;
@@ -111,12 +97,10 @@ input {
   margin-right: 8px;
   margin-bottom: 16px;
 }
-
 .submit-button:hover {
   background-color: #fed001;
   color: #000000;
 }
-
 .copy-status, .generate-status {
   font-size: 12px;
   color: #fed001;
@@ -124,7 +108,6 @@ input {
   margin-bottom: 8px;
   font-style: italic;
 }
-
 .output {
   height: 240px;
   width: 100%;
@@ -136,24 +119,76 @@ input {
   box-sizing: border-box;
   resize: none;
 }
-
 footer {
   font-size: 12px;
   text-align: center;
   line-height: 1.5;
   margin-top: 32px;
 }
-
 footer a {
   color: #fed001;
   text-decoration: none;
 }
-
 footer p a[href="./license.html"] {
   color: #333333;
 }
 
-/* Quick Info Icon (PNG) and Callout Styling */
+/* GPT Assist Toggle (Pill Style) */
+.controls-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 0;
+  font-size: 13px;
+  font-weight: 600;
+  gap: 10px;
+  color: #333333;
+}
+
+.gpt-toggle-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+
+.gpt-toggle-wrapper input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.gpt-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #000000;
+  border-radius: 24px;
+  transition: background-color 0.3s;
+}
+
+.gpt-slider::before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.gpt-toggle-wrapper input:checked + .gpt-slider {
+  background-color: #fed001;
+}
+
+.gpt-toggle-wrapper input:checked + .gpt-slider::before {
+  transform: translateX(24px);
+}
+
+/* Info Icon + Callout */
 #quickInfoIcon {
   display: inline-block;
   width: 13px;
@@ -185,17 +220,14 @@ footer p a[href="./license.html"] {
   top: calc(100% + 15px);
   left: 50%;
 }
-
 .quick-info-callout.hidden {
   display: none;
 }
-
 .quick-info-callout.active {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
   pointer-events: auto;
 }
-
 .quick-info-arrow {
   position: absolute;
   width: 0;
@@ -208,41 +240,21 @@ footer p a[href="./license.html"] {
   transform: translateX(-50%);
   filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, 0.1));
 }
-
 .quick-info-content-wrapper {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
 }
-
 .quick-info-title {
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 8px;
   color: #333;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
-
 .quick-info-description {
   font-size: 13px;
   line-height: 1.4;
   color: #555;
   margin: 0;
-}
-
-/* ✅ GPT Assist Toggle Styling */
-.controls-section {
-  display: flex;
-  align-items: center;
-  margin: 16px 0;
-  font-size: 13px;
-  gap: 8px;
-  color: #333333;
-}
-
-.controls-section input[type="checkbox"] {
-  transform: scale(1.1);
-  accent-color: #fed001;
-  cursor: pointer;
 }
