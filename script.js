@@ -1,8 +1,8 @@
 // ✖️ GPT OPS Prompt Builder
-// Version: v1.4.1
+// Version: v1.4.2
 // https://gpt-ops-builder.vercel.app
 
-const VERSION = "v1.4.1";
+const VERSION = "v1.4.2";
 
 const toggle = document.getElementById("toggle");
 const quickForm = document.getElementById("quickForm");
@@ -11,7 +11,7 @@ const generateStatus = document.getElementById("generateStatus");
 const copyStatus = document.getElementById("copyStatus");
 const output = document.getElementById("output");
 
-// ✅ PATCH: GPT Assist toggle element
+// ✅ GPT Assist toggle element
 let gptToggle = document.getElementById("enableGPTAssist");
 if (!gptToggle) {
   const t = document.createElement("label");
@@ -34,7 +34,7 @@ toggle.addEventListener("click", () => {
   generateStatus.innerText = "";
 });
 
-// ✅ PATCH: Enhanced generate logic
+// Generate button logic
 document.getElementById("generateButton").addEventListener("click", async () => {
   const isQuick = toggle.classList.contains("active-quick");
   let txt = "";
@@ -66,13 +66,13 @@ document.getElementById("generateButton").addEventListener("click", async () => 
     parts.unshift("✖ GPT OPS FULL INSTRUCTIONS");
     txt = parts.join("\n");
     if (parts.length > 1) {
-      txt += "\n\nAlso include 3-5 example input/output pairs showing how this GPT should respond. Tone should be professional and clear. You may include comments.";
+      txt += "\n\nAlso include 3–5 example input/output pairs showing how this GPT should respond. Tone should be professional and clear. You may include comments.";
     }
   }
 
   output.value = txt;
 
-  // ✅ PATCH: GPT Assist call
+  // ✅ GPT Assist API Call
   if (gptToggle.checked) {
     generateStatus.innerText = "Enhancing with GPT...";
     try {
@@ -90,7 +90,7 @@ document.getElementById("generateButton").addEventListener("click", async () => 
   }
 });
 
-// Copy logic
+// Copy button logic
 document.getElementById("copyButton").addEventListener("click", () => {
   const text = output.value.trim();
   generateStatus.innerText = "";
@@ -102,7 +102,56 @@ document.getElementById("copyButton").addEventListener("click", () => {
   }
 });
 
-// ✅ PATCH: Quick Info Callout (hover-only)
+// Clipboard utility
+function copyToClipboard(text) {
+  return new Promise((resolve, reject) => {
+    const finalText = text + hiddenAttribution;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(finalText).then(resolve).catch(reject);
+    } else {
+      const temp = document.createElement("textarea");
+      temp.value = finalText;
+      document.body.appendChild(temp);
+      temp.select();
+      try {
+        document.execCommand("copy");
+        resolve();
+      } catch (e) {
+        reject(e);
+      } finally {
+        document.body.removeChild(temp);
+      }
+    }
+  });
+}
+
+// ✅ GPT Assist API Function
+async function callGPTAssist(instructionText) {
+  try {
+    const response = await fetch("https://got-ops-api.onrender.com/api/validate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        instruction: instructionText,
+        failure_type: "soft_flag",
+        mode: "Strict",
+        context_tags: ["ambiguity"],
+        desired_fix_type: "clarify",
+        language_register: "professional",
+        target_role: "AI assistant",
+        useAI: true
+      })
+    });
+
+    const result = await response.json();
+    return result;
+  } catch (err) {
+    console.error("GPT Assist failed:", err);
+    return { enhanced_instruction: null };
+  }
+}
+
+// ✅ Quick Info Callout logic
 document.addEventListener('DOMContentLoaded', () => {
   const quickInfoIcon = document.getElementById('quickInfoIcon');
   const gptOpsInfoCallout = document.getElementById('gptOpsInfoCallout');
