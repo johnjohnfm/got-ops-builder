@@ -1,8 +1,8 @@
 // ✖️ GPT OPS Prompt Builder
-// Version: v1.4.0
+// Version: v1.4.1
 // https://gpt-ops-builder.vercel.app
 
-const VERSION = "v1.4.0";
+const VERSION = "v1.4.1";
 
 const toggle = document.getElementById("toggle");
 const quickForm = document.getElementById("quickForm");
@@ -11,18 +11,18 @@ const generateStatus = document.getElementById("generateStatus");
 const copyStatus = document.getElementById("copyStatus");
 const output = document.getElementById("output");
 
-// ✅ Inject GPT Assist Toggle if missing
+// ✅ PATCH: GPT Assist toggle element
 let gptToggle = document.getElementById("enableGPTAssist");
 if (!gptToggle) {
-  const label = document.createElement("label");
-  label.innerHTML = `<input type="checkbox" id="enableGPTAssist"> Enhance with GPT`;
-  document.getElementById("controlsSection")?.appendChild(label);
+  const t = document.createElement("label");
+  t.innerHTML = '<input type="checkbox" id="enableGPTAssist"> Enhance with GPT';
+  document.getElementById("controlsSection")?.appendChild(t);
   gptToggle = document.getElementById("enableGPTAssist");
 }
 
 const hiddenAttribution = `\n\nGenerated using GPT-OPS v2.1\n© 2024 JOHNJOHNFM — Instruction Architecture by JOHN E. REYNOLDS\nLicense: https://gpt-ops-builder.vercel.app/license.html\nAttribution Required + Ethical Use Only`;
 
-// Form toggle functionality
+// Form toggle logic
 toggle.addEventListener("click", () => {
   const isQuick = toggle.classList.contains("active-quick");
   toggle.classList.toggle("active-quick", !isQuick);
@@ -34,7 +34,7 @@ toggle.addEventListener("click", () => {
   generateStatus.innerText = "";
 });
 
-// ✅ Fully async handler for GPT Assist
+// ✅ PATCH: Enhanced generate logic
 document.getElementById("generateButton").addEventListener("click", async () => {
   const isQuick = toggle.classList.contains("active-quick");
   let txt = "";
@@ -53,12 +53,7 @@ document.getElementById("generateButton").addEventListener("click", async () => 
   } else {
     const get = id => document.getElementById(id).value.trim();
     const fields = ["projectName","purpose","users","disciplines","outputs","tone","values","memory","mustHave","shouldHave","couldHave","wontHave"];
-    const labels = [
-      "X PROJECT NAME", "X PURPOSE", "X PRIMARY USERS", "X CORE DISCIPLINE(S)",
-      "X PREFERRED OUTPUTS", "X BRAND OR TONE", "X VALUES OR PRIORITIES",
-      "X KEY MEMORY ELEMENTS", "X MUST-HAVE BEHAVIORS", "X SHOULD-HAVE FEATURES",
-      "X COULD-HAVE EXTRAS", "X WON'T-HAVES"
-    ];
+    const labels = ["X PROJECT NAME","X PURPOSE","X PRIMARY USERS","X CORE DISCIPLINE(S)","X PREFERRED OUTPUTS","X BRAND OR TONE","X VALUES OR PRIORITIES","X KEY MEMORY ELEMENTS","X MUST‑HAVE BEHAVIORS","X SHOULD‑HAVE FEATURES","X COULD‑HAVE EXTRAS","X WON'T‑HAVES"];
     let parts = [];
     for (let i = 0; i < fields.length; i++) {
       const val = get(fields[i]);
@@ -71,14 +66,14 @@ document.getElementById("generateButton").addEventListener("click", async () => 
     parts.unshift("✖ GPT OPS FULL INSTRUCTIONS");
     txt = parts.join("\n");
     if (parts.length > 1) {
-      txt += "\n\nAlso include 3–5 example input/output pairs showing how this GPT should respond to common user queries. The tone should be professional and clear. You may include comments.";
+      txt += "\n\nAlso include 3-5 example input/output pairs showing how this GPT should respond. Tone should be professional and clear. You may include comments.";
     }
   }
 
   output.value = txt;
 
-  // ✅ GPT Assist Enhancement
-  if (gptToggle?.checked) {
+  // ✅ PATCH: GPT Assist call
+  if (gptToggle.checked) {
     generateStatus.innerText = "Enhancing with GPT...";
     try {
       const result = await callGPTAssist(txt);
@@ -86,7 +81,7 @@ document.getElementById("generateButton").addEventListener("click", async () => 
         output.value = result.enhanced_instruction;
         generateStatus.innerText = "GPT Enhancement Complete.";
       } else {
-        generateStatus.innerText = "No enhancement returned.";
+        generateStatus.innerText = "GPT returned no enhancement.";
       }
     } catch (err) {
       console.error("GPT Assist error:", err);
@@ -95,33 +90,28 @@ document.getElementById("generateButton").addEventListener("click", async () => 
   }
 });
 
-// Copy functionality
+// Copy logic
 document.getElementById("copyButton").addEventListener("click", () => {
   const text = output.value.trim();
   generateStatus.innerText = "";
   copyStatus.innerText = "";
   if (text) {
-    copyToClipboard(text).then(() => copyStatus.innerText = "Prompt copied!").catch(() => copyStatus.innerText = "Prompt copied! (Fallback)");
+    copyToClipboard(text).then(() => copyStatus.innerText = "Prompt copied!").catch(() => copyStatus.innerText = "Prompt copied! (fallback)");
   } else {
     copyStatus.innerText = "Please generate a prompt first.";
   }
 });
 
-// Append hidden attribution to manual copy
-output.addEventListener('copy', event => {
-  const selection = window.getSelection().toString() || output.value;
-  event.preventDefault();
-  event.clipboardData.setData('text/plain', selection + hiddenAttribution);
-  copyStatus.innerText = 'Prompt copied!';
-});
-
-// Quick Info Callout
+// ✅ PATCH: Quick Info Callout (hover-only)
 document.addEventListener('DOMContentLoaded', () => {
   const quickInfoIcon = document.getElementById('quickInfoIcon');
   const gptOpsInfoCallout = document.getElementById('gptOpsInfoCallout');
   let dismissTimeout;
 
-  if (!quickInfoIcon || !gptOpsInfoCallout) return;
+  if (!quickInfoIcon || !gptOpsInfoCallout) {
+    console.error('Quick Info elements not found');
+    return;
+  }
 
   function showCallout() {
     if (dismissTimeout) clearTimeout(dismissTimeout);
@@ -139,73 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   quickInfoIcon.addEventListener('mouseenter', showCallout);
   quickInfoIcon.addEventListener('mouseleave', hideCallout);
-  gptOpsInfoCallout.addEventListener('mouseenter', () => clearTimeout(dismissTimeout));
+  gptOpsInfoCallout.addEventListener('mouseenter', () => {
+    if (dismissTimeout) clearTimeout(dismissTimeout);
+  });
   gptOpsInfoCallout.addEventListener('mouseleave', hideCallout);
   quickInfoIcon.addEventListener('focus', showCallout);
   quickInfoIcon.addEventListener('blur', hideCallout);
 });
-
-// Copy helper
-function copyToClipboard(text) {
-  return new Promise((resolve, reject) => {
-    const finalText = text + hiddenAttribution;
-    if (navigator.clipboard?.writeText) {
-      navigator.clipboard.writeText(finalText).then(resolve).catch(err => {
-        const temp = document.createElement('textarea');
-        temp.value = finalText;
-        document.body.appendChild(temp);
-        temp.select();
-        try {
-          document.execCommand('copy');
-          resolve();
-        } catch (e) {
-          reject(e);
-        } finally {
-          document.body.removeChild(temp);
-        }
-      });
-    } else {
-      const temp = document.createElement('textarea');
-      temp.value = finalText;
-      document.body.appendChild(temp);
-      temp.select();
-      try {
-        document.execCommand('copy');
-        resolve();
-      } catch (e) {
-        reject(e);
-      } finally {
-        document.body.removeChild(temp);
-      }
-    }
-  });
-}
-
-// ✅ GPT Assist API Callout
-async function callGPTAssist(instructionText) {
-  try {
-    const res = await fetch("https://got-ops-api.onrender.com/api/validate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        instruction: instructionText,
-        failure_type: "soft_flag",
-        mode: "Strict",
-        context_tags: ["ambiguity"],
-        desired_fix_type: "clarify",
-        language_register: "professional",
-        target_role: "AI assistant",
-        useAI: true
-      })
-    });
-    const result = await res.json();
-    return result;
-  } catch (err) {
-    console.error("GPT Assist failed:", err);
-    return { enhanced_instruction: null };
-  }
-}
-
-// © 2025 John E. Reynolds. All rights reserved.
-// Licensed under GPT-OPS License v2.1 — https://gpt-ops-builder.vercel.app/license.html
-// Authored as part of the GPT-OPS Instruction Architecture by JOHNJOHNFM.
