@@ -48,18 +48,18 @@ document.getElementById("generateButton").addEventListener("click", () => {
     const get = id => document.getElementById(id).value.trim();
     const fields = ["projectName","purpose","users","disciplines","outputs","tone","values","memory","mustHave","shouldHave","couldHave","wontHave"];
     const labels = [
-        "X PROJECT NAME",
-        "X PURPOSE",
-        "X PRIMARY USERS",
-        "X CORE DISCIPLINE(S)",
-        "X PREFERRED OUTPUTS",
-        "X BRAND OR TONE",
-        "X VALUES OR PRIORITIES",
-        "X KEY MEMORY ELEMENTS",
-        "X MUST-HAVE BEHAVIORS",
-        "X SHOULD-HAVE FEATURES",
-        "X COULD-HAVE EXTRAS",
-        "X WON'T-HAVES"
+        "✖️ PROJECT NAME",
+        "✖️ PURPOSE",
+        "✖️ PRIMARY USERS",
+        "✖️ CORE DISCIPLINE(S)",
+        "✖️ PREFERRED OUTPUTS",
+        "✖️ BRAND OR TONE",
+        "✖️ VALUES OR PRIORITIES",
+        "✖️ KEY MEMORY ELEMENTS",
+        "✖️ MUST-HAVE BEHAVIORS",
+        "✖️ SHOULD-HAVE FEATURES",
+        "✖️ COULD-HAVE EXTRAS",
+        "✖️ WON'T-HAVES"
     ];
     let parts = [];
 
