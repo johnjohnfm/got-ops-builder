@@ -75,8 +75,8 @@ document.getElementById("generateButton").addEventListener("click", () => {
       }
     }
 
-    // This is the line that was modified to include the desired prompt.
-    parts.unshift("Create and optimize detailed ChatGPT Project Instructions using the following variables:");
+    // Added a newline character (\n) at the end of the prompt string
+    parts.unshift("Create and optimize detailed ChatGPT Project Instructions using the following variables:\n");
     txt = parts.join("\n");
 
     // Removed the "Also include" function as requested by the user.
@@ -203,6 +203,6 @@ function copyToClipboard(text) {
   });
 }
 
-// © 2025 John E. Reynolds. All rights reserved.
+// © 2025 JOHNJOHNFM, LLC. All rights reserved.
 // Licensed under GPT-OPS License v2.1 — https://gpt-ops-builder.vercel.app/license.html
 // Authored as part of the GPT-OPS Instruction Architecture by JOHNJOHNFM.
