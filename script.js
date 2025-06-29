@@ -76,7 +76,7 @@ document.getElementById("generateButton").addEventListener("click", () => {
     }
 
     // This is the line that was modified to include the desired prompt.
-    parts.unshift("Create and optimize ChatGPT Project Instructions with the following variables:");
+    parts.unshift("Create and optimize detailed ChatGPT Project Instructions using the following variables:");
     txt = parts.join("\n");
 
     // Removed the "Also include" function as requested by the user.
