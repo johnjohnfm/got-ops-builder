@@ -11,7 +11,7 @@ const copyStatus = document.getElementById("copyStatus");
 const output = document.getElementById("output");
 // Global constant for attribution text, accessible by all copy functions.
 // Modified to add an extra newline (\n) at the beginning for better spacing in copied output.
-const hiddenAttribution = `\n\nGenerated using GPT-OPS v2.1\n© 2024 JOHNJOHNFM — Instruction Architecture by JOHN E. REYNOLDS\nLicense: https://gpt-ops-builder.vercel.app/license.html\nAttribution Required + Ethical Use Only`;
+const hiddenAttribution = `\n\nGenerated using GPT-OPS v1.3.5\n© 2024 JOHNJOHNFM — Instruction Architecture by JOHN E. REYNOLDS\nLicense: https://gpt-ops-builder.vercel.app/license.html\nAttribution Required + Ethical Use Only`;
 
 // Form toggle functionality
 document.querySelectorAll('input[name="formMode"], .switch').forEach(el => {
